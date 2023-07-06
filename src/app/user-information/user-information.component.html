@@ -1,0 +1,80 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="mt-5 userInfoDiv">
+            <p class="footerParagraph">{{loggedInUser.firstName}} {{loggedInUser.lastName}}</p>
+        </div>
+        <div class="userInfoDiv">
+            <img class="rounded-circle" src="../../assets/House2.png" alt="Generic placeholder image" width="140"
+                height="140">
+        </div>
+        <div class="userInfoDiv">
+            <p class="footerParagraph fontSize">Role: {{loggedInUser.role}}</p>
+            <p class="footerParagraph fontSize">{{loggedInUser.house.streetName}}
+                {{loggedInUser.house.houseNumber}}</p>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-success btn-sm buttonForMenus" data-toggle="modal" data-target="#exampleModalCenter">
+                Edit info
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form #editMyUserForm="ngForm" (ngSubmit)="editMyUser(editMyUserForm)">
+                                <input type="hidden" name="id" id="id" [(ngModel)]="loggedInUser.id"/>
+                                <input type="hidden" name="enabled" id="enabled" [(ngModel)]="loggedInUser.enabled"/>
+                                <div class="form-group">
+                                    <label for="firstName">{{loggedInUser.firstName}}</label>
+                                    <input type="hidden" name="firstName" id="firstName" [(ngModel)]="loggedInUser.firstName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">{{loggedInUser.lastName}}</label>
+                                    <input type="hidden" name="lastName" id="lastName" [(ngModel)]="loggedInUser.lastName">
+                                </div>
+                                <div class="form-group">
+                                    <label for="role">{{loggedInUser.role}}</label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="house">{{loggedInUser.house.streetName}}
+                                        {{loggedInUser.house.houseNumber}}</label>
+                                        <input type="hidden" name="house" id="house" [(ngModel)]="loggedInUser.house.id">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phoneNumber">Phone number</label>
+                                    <input type="text" name="phoneNumber" class="form-control" id="phoneNumber" [(ngModel)]="loggedInUser.phoneNumber">
+                                </div>
+                                <div class="form-group">
+                                    <label for="bankAccount">Bank account</label>
+                                    <input type="text" name="bankAccount" class="form-control" id="bankAccount" [(ngModel)]="loggedInUser.bankAccount">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" class="form-control" id="email" [(ngModel)]="loggedInUser.email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Set new password</label>
+                                    <input type="text" name="password" class="form-control" id="password" (ngModel)="loggedInUser.password">
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2" (click)="closeModal('exampleModalCenter')">
+                                    Save changes
+                                </button>
+                            </form>
+                        </div>
+                        <!-- <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

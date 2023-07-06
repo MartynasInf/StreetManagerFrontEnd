@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-lg-2 col-md-3 col-sm-12 dashboardMenuBackground d-md-block sidebar navbar navbar-expand-lg">
+            <div class="sidebar-sticky dashboardMenuDivs">
+                <div>
+                    <app-user-information></app-user-information>
+                </div>
+                <div class="mt-5">
+                    <app-dashboard-menu></app-dashboard-menu>
+                </div>
+                <div class="navbar-nav bottom-buttons-wrapper mt-5">
+                    <button type="button" class="btn btn-outline-success bottom-button" (click)="logout()">Logout</button>
+                </div>
+            </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-0 dashbordViewBackground ">
+            <div>
+                <div class="px-3 top-header">
+                    <app-dashboard-header></app-dashboard-header>
+                </div>
+                <div class="px-3 mb-5 pb-5">
+                    <router-outlet></router-outlet>
+                </div>
+                <div class="bottom-footer pt-2 px-3">
+                    <app-dashboard-footer></app-dashboard-footer>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
