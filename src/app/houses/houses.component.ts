@@ -56,7 +56,7 @@ export class HousesComponent {
     this.apiService.deleteHouse(house.id);
   }
   public saveEditedHouse(houseDetails: NgForm){
-    this.apiService.saveHouseInfo(houseDetails.value);
+    this.apiService.updateHouseInfo(houseDetails.value);
   }
 
   closeModal(modalId: string): void {

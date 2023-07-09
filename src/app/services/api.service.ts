@@ -116,6 +116,22 @@ export class ApiService {
     return this.httpClient.post<House>("http://localhost:8080/authorised/houses/admin/add", houseInfo, {headers, responseType: 'text' as 'json'})
   }
   //-----------------------------------------------------------------------------------------
+  public updateHouseInfo(houseInfo: House): void {
+    this.saveUpdatedHouseToDB(houseInfo).subscribe (
+      (response: House) => {
+        this.getAllHouses();
+        this.getAllUsers();
+        this.getAllPayments();
+      }
+    )
+  }
+
+  private saveUpdatedHouseToDB(houseInfo: House): Observable<House>{
+    const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
+    return this.httpClient.post<House>("http://localhost:8080/authorised/houses/admin/update", houseInfo, {headers, responseType: 'text' as 'json'})
+  }
+
+  //-----------------------------------------------------------------------------------------
   public deleteHouse(houseId: any){
     this.deleteHouseFromDB(houseId).subscribe (
       (response: House) => {
@@ -207,7 +223,7 @@ export class ApiService {
 
   private changePaymentRequestOperationStatusInDb(paymentRequest:PaymentRq): Observable<PaymentRq>{
     const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
-    return this.httpClient.post<PaymentRq>('http://localhost:8080/authorised/payments/changePaymentRequestStatus', paymentRequest, {headers})
+    return this.httpClient.post<PaymentRq>('http://localhost:8080/authorised/payments/changePaymentRequestStatus', paymentRequest, {headers, responseType: 'text' as 'json'})
   }
   //------------------------------------------------------------------------------------------------------------
   public payHousePayment(housePayment: HousePayment) {
@@ -224,6 +240,4 @@ export class ApiService {
     const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
     return this.httpClient.post<HousePayment>('http://localhost:8080/authorised/housePayments/pay', housePayment, {headers})
   }
-
-
 }
