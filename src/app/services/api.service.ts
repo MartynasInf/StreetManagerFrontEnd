@@ -193,7 +193,7 @@ export class ApiService {
 
   private saveNewPaymentToDb(paymentRequest: PaymentRq): Observable<PaymentRq>{
     const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
-    return this.httpClient.post<PaymentRq>("http://localhost:8080/authorised/payments/newPaymentRequest", paymentRequest, {headers})
+    return this.httpClient.post<PaymentRq>("http://localhost:8080/authorised/payments/newPaymentRequest", paymentRequest, {headers, responseType: 'text' as 'json'})
   }
   //-----------------------------------------------------------------------------------------------------
   public deletePaymentRequest(paymentId: any) {

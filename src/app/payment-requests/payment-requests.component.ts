@@ -22,9 +22,6 @@ export class PaymentRequestsComponent {
   housePayment: HousePayment = {} as HousePayment;
 
 
-  
-
-
   constructor(private apiService: ApiService, private cdr: ChangeDetectorRef){
     this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
       this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
@@ -35,12 +32,12 @@ export class PaymentRequestsComponent {
   }
 
   ngOnInit(){
-    this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
-      this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
-    });
-    this.apiService.getAllHouses().subscribe((houses: House[]) => {
-      this.houses = houses; // Update houses array when data changes
-    });
+    // this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
+    //   this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
+    // });
+    // this.apiService.getAllHouses().subscribe((houses: House[]) => {
+    //   this.houses = houses; // Update houses array when data changes
+    // });
   }
 
   onSelectionChange(selectElement: HTMLSelectElement): void {
