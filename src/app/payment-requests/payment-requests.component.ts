@@ -20,6 +20,7 @@ export class PaymentRequestsComponent {
   newPaymentRequest: PaymentRq = {} as PaymentRq;
   houses: House[] = [];
   housePayment: HousePayment = {} as HousePayment;
+  housesWithOwners: House[] = [];
 
 
   constructor(private apiService: ApiService, private cdr: ChangeDetectorRef){
@@ -32,30 +33,15 @@ export class PaymentRequestsComponent {
   }
 
   ngOnInit(){
-    // this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
-    //   this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
-    // });
+    this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
+      this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
+    });
     // this.apiService.getAllHouses().subscribe((houses: House[]) => {
     //   this.houses = houses; // Update houses array when data changes
     // });
   }
 
-  onSelectionChange(selectElement: HTMLSelectElement): void {
-    const options = selectElement.options;
-    this.selectedValues = Array.from(options)
-      .filter(option => option.selected)
-      .map(option => option.text);
-  }
 
-  closeModal(modalId: string): void {
-    $('#' + modalId).modal('hide');
-    $('body').removeClass('modal-open');
-    $('.modal-backdrop').remove();
-  }
-
-  public saveNewPaymentRequest(newRequest: NgForm){
-    this.apiService.saveNewPaymentRequest(newRequest.value)
-  }
 
   public deletePaymentRequest(requestId: any){
     this.apiService.deletePaymentRequest(requestId)
@@ -93,4 +79,5 @@ export class PaymentRequestsComponent {
     this.newPaymentRequest.operationStatus = "ARCHIVED";
     this.apiService.changePaymentRequestOperationStatus(this.newPaymentRequest);
   }
+
 }

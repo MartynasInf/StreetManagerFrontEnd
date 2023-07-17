@@ -9,6 +9,7 @@
   </li>
 </ul>
 
+
 <div class="container-fluid mt-2 mb-2">
   <div class="row pl-4">
     <div class="form-group">
@@ -29,55 +30,7 @@
     </div>
   </div>
   <div class="row pl-4">
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenterPayments">
-      Create new Payment request
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenterPayments" tabindex="-1" role="dialog"
-      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">New payment request</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form #newPaymentForm="ngForm" (ngSubmit)="saveNewPaymentRequest(newPaymentForm)">
-              <div class="form-group text-left">
-                <label for="purpose">Purpose</label>
-                <input type="text" name="purpose" class="form-control" id="purspose"
-                  [(ngModel)]="newPaymentRequest.purpose" />
-              </div>
-              <div class="form-group text-left">
-                <label for="dueDate">Due date</label>
-                <input type="date" name="dueDate" class="form-control" id="dueDate"
-                  [(ngModel)]="newPaymentRequest.dueDate" />
-              </div>
-              <div class="form-group text-left">
-                <label for="totalSum">Total sum to pay</label>
-                <input type="text" name="totalSum" class="form-control" id="totalSum"
-                  [(ngModel)]="newPaymentRequest.totalSum" />
-              </div>
-              <div class="form-group text-left">
-                <label for="houseIds">Select Houses</label>
-                <select multiple name="houseIds" class="form-control" id="houseIds"
-                  [(ngModel)]="newPaymentRequest.houseIds">
-                  <option *ngFor="let house of houses" [value]="house.id">{{house.streetName}} {{house.houseNumber}}
-                  </option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary mr-2" (click)="closeModal('exampleModalCenterPayments')">
-                Create payment request
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+    <button type="button" class="btn btn-info ml-2" routerLink="/dashboard/paymentOperationCreateForm">Create new payment request</button>
   </div>
 </div>
 
@@ -150,6 +103,11 @@
       </div>
     </div>
   </div>
+
+
+
+
+
 
 
   <div class="tab-pane fade" id="archive" role="tabpanel" aria-labelledby="archive-tab">

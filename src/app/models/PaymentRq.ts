@@ -8,5 +8,6 @@ export interface PaymentRq {
     operationStatus: string;
     housePayments: HousePayment[];
 
+
     houseIds: number[];
 }

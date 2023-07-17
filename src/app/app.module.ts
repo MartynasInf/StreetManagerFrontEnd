@@ -21,7 +21,8 @@ import { DashboardFooterComponent } from './dashboard-footer/dashboard-footer.co
 import { DashboardHeaderComponent } from './dashboard-header/dashboard-header.component';
 import { PollsComponent } from './polls/polls.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { AdvertisementsComponent } from './advertisements/advertisements.component'
+import { AdvertisementsComponent } from './advertisements/advertisements.component';
+import { PaymentRequestCreateFormComponent } from './payment-request-create-form/payment-request-create-form.component'
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { AdvertisementsComponent } from './advertisements/advertisements.compone
     DashboardHeaderComponent,
     PollsComponent,
     StatisticsComponent,
-    AdvertisementsComponent
+    AdvertisementsComponent,
+    PaymentRequestCreateFormComponent
   ],
   imports: [
     BrowserModule,

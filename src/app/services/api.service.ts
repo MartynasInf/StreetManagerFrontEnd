@@ -27,7 +27,7 @@ export class ApiService {
 
   private userUpdated = new Subject<User[]>();
   private housesUpdated = new Subject<House[]>();
-  private loggedUserUpdated = new Subject<loggedInUserDetails>();
+ 
   private paymentRequestsUpdated = new Subject<PaymentRq[]>();
   
 
@@ -52,6 +52,7 @@ export class ApiService {
       (response: User[]) => {
         this.users = response;
         this.userUpdated.next([...this.users]);
+        console.log(this.users)
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -238,6 +239,6 @@ export class ApiService {
 
   private changeHousePaymentStatusInDb(housePayment: HousePayment): Observable<HousePayment>{
     const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
-    return this.httpClient.post<HousePayment>('http://localhost:8080/authorised/housePayments/pay', housePayment, {headers})
+    return this.httpClient.post<HousePayment>('http://localhost:8080/authorised/housePayments/pay', housePayment, {headers, responseType: 'text' as 'json'})
   }
 }
