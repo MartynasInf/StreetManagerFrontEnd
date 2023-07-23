@@ -176,3 +176,16 @@ body {
   vertical-align: auto;
 }
 
+.scrollTableSettings{
+  height: 500px; 
+  overflow-y: auto;
+}
+
+.width100{
+  width: 100%;
+}
+
+.backgroundWhite{
+  background-color: white;
+}
+

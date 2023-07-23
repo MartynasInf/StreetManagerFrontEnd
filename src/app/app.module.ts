@@ -23,6 +23,9 @@ import { PollsComponent } from './polls/polls.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { AdvertisementsComponent } from './advertisements/advertisements.component';
 import { PaymentRequestCreateFormComponent } from './payment-request-create-form/payment-request-create-form.component'
+import { FilterPipe } from './services/filter.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @NgModule({
   declarations: [
@@ -43,14 +46,16 @@ import { PaymentRequestCreateFormComponent } from './payment-request-create-form
     PollsComponent,
     StatisticsComponent,
     AdvertisementsComponent,
-    PaymentRequestCreateFormComponent
+    PaymentRequestCreateFormComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

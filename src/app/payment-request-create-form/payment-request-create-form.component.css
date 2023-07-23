@@ -1,0 +1,5 @@
+.pagination .disabled {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+    cursor: pointer;
+  }

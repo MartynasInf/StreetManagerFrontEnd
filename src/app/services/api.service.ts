@@ -52,7 +52,6 @@ export class ApiService {
       (response: User[]) => {
         this.users = response;
         this.userUpdated.next([...this.users]);
-        console.log(this.users)
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
