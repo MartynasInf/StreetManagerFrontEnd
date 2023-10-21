@@ -8,8 +8,6 @@
       aria-selected="false">Archive</a>
   </li>
 </ul>
-
-
 <div class="container-fluid mt-2 mb-2">
   <div class="row pl-4">
     <div class="form-group">
@@ -30,7 +28,8 @@
     </div>
   </div>
   <div class="row pl-4">
-    <button type="button" class="btn btn-info ml-2" routerLink="/dashboard/paymentOperationCreateForm">Create new payment request</button>
+    <button type="button" class="btn btn-info ml-2" routerLink="/dashboard/paymentOperationCreateForm">Create new
+      payment request</button>
   </div>
 </div>
 
@@ -39,43 +38,62 @@
     <div class="container-fluid background">
       <div class="container-fluid" id="main-container">
         <div class="row">
-          <div *ngFor="let paymentRequest of paymentRequests" class="col-md-12 col-xl-15 mt-2">
+          <div class="col-md-12 col-xl-15 mt-2">
             <div class="card m-b-30">
               <div class="row pl-3 pt-2">
                 <div class="paymentRequestInfoStyles" style="width: 3%;">
+                  <p>ID</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 25%;">
+                  <p>Payment purpose</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>Created</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 15%;">
+                  <p>Created by</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>Due date</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>Total sum</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 10%;">
+                  <p>Operation status</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 15%">
+                  <p>Payments received</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngFor="let paymentRequest of activePaymentRequests" class="col-md-12 col-xl-15 mt-2">
+            <div class="card m-b-30">
+              <!-- (click)="openPaymentRequestDetails(paymentRequest.id)" -->
+              <div class="row pl-3 pt-2" (click)="openPaymentRequestDetails(paymentRequest.id)">
+                <div class="paymentRequestInfoStyles" style="width: 3%;">
                   <p>{{paymentRequest.id}}</p>
                 </div>
-                <div class="paymentRequestInfoStyles" style="width: 23%;">
+                <div class="paymentRequestInfoStyles" style="width: 25%;">
                   <p>{{paymentRequest.purpose}}</p>
                 </div>
-                <div class="paymentRequestInfoStyles" style="width: 12%;">
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>{{paymentRequest.creationDate}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 15%;">
+                  <p>{{paymentRequest.creator}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
                   <p>{{paymentRequest.dueDate}}</p>
                 </div>
                 <div class="paymentRequestInfoStyles" style="width: 8%;">
                   <p>{{paymentRequest.totalSum}}</p>
                 </div>
-                <div class="paymentRequestInfoStyles" style="width: 13%;">
+                <div class="paymentRequestInfoStyles" style="width: 10%;">
                   <p>{{paymentRequest.operationStatus}}</p>
                 </div>
-                <div class="paymentRequestInfoStyles" style="width: 17%;">
-                  <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    List of houses
-                  </button>
-                  <div class="dropdown-menu">
-                    <div class="row pl-3" *ngFor="let housePayment of paymentRequest.housePayments">
-                      <p>{{housePayment.house.streetName}} {{housePayment.house.houseNumber}}, {{housePayment.amount}}
-                        Eur. Payment status: </p>
-                      <div class="square-form" [ngStyle]="{'background-color': housePayment.isPaid ? 'green' : 'red'}">
-                      </div>
-                      <button type="button" class="btn btn-success btn-sm pay-button"
-                        *ngIf="paymentRequest.operationStatus === 'ACTIVE' && !housePayment.isPaid"
-                        (click)="payHousePayment(housePayment.id)">Pay</button>
-                    </div>
-                  </div>
-                 
-                </div>
-                <div class="paymentRequestInfoStyles" style="width: 14%">
+                <div class="paymentRequestInfoStyles" style="width: 15%">
                   <div class="progress" style="width: 100%;">
                     <div class="progress-bar" role="progressbar"
                       [style.width.%]="percentageCalculator(paymentRequest.housePayments)" aria-valuenow="25"
@@ -83,19 +101,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="card-body">
-                <button type="button" class="btn btn-warning btn-sm mr-2"
-                  *ngIf="paymentRequest.operationStatus === 'CREATION'">Edit</button>
-                <button type="button" class="btn btn-danger btn-sm mr-2"
-                  *ngIf="paymentRequest.operationStatus === 'CREATION'"
-                  (click)="deletePaymentRequest(paymentRequest.id)">Delete</button>
-                <button type="button" class="btn btn-success btn-sm mr-2"
-                  *ngIf="paymentRequest.operationStatus === 'CREATION'"
-                  (click)="submitPaymentRequest(paymentRequest.id)">Submit</button>
-                <button type="button" class="btn btn-success btn-sm mr-2"
-                  *ngIf="percentageCalculator(paymentRequest.housePayments) === 100 && paymentRequest.operationStatus === 'ACTIVE'"
-                  (click)="archivePaymentRequest(paymentRequest.id)">Archive</button>
               </div>
             </div>
           </div>
@@ -111,8 +116,77 @@
 
 
   <div class="tab-pane fade" id="archive" role="tabpanel" aria-labelledby="archive-tab">
-    <!-- Content for the Archive tab goes here -->
-    <h3>Archive Tab Content</h3>
-    <p>This is the content for the Archive tab.</p>
+    <div class="container-fluid background">
+      <div class="container-fluid" id="main-container">
+        <div class="row">
+          <div class="col-md-12 col-xl-15 mt-2">
+            <div class="card m-b-30">
+              <div class="row pl-3 pt-2">
+                <div class="paymentRequestInfoStyles" style="width: 3%;">
+                  <p>ID</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 25%;">
+                  <p>Payment purpose</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>Created</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 15%;">
+                  <p>Created by</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>Due date</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>Total sum</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 13%;">
+                  <p>Operation status</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 14%">
+                  <p>Payments received</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngFor="let paymentRequest of archivedPaymentRequests" class="col-md-12 col-xl-15 mt-2">
+            <div class="card m-b-30">
+              <!-- (click)="openPaymentRequestDetails(paymentRequest.id)" -->
+              <div class="row pl-3 pt-2" (click)="openPaymentRequestDetails(paymentRequest.id)">
+                <div class="paymentRequestInfoStyles" style="width: 3%;">
+                  <p>{{paymentRequest.id}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 25%;">
+                  <p>{{paymentRequest.purpose}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>{{paymentRequest.creationDate}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 15%;">
+                  <p>{{paymentRequest.creator}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>{{paymentRequest.dueDate}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 8%;">
+                  <p>{{paymentRequest.totalSum}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 10%;">
+                  <p>{{paymentRequest.operationStatus}}</p>
+                </div>
+                <div class="paymentRequestInfoStyles" style="width: 14%">
+                  <div class="progress" style="width: 100%;">
+                    <div class="progress-bar" role="progressbar"
+                      [style.width.%]="percentageCalculator(paymentRequest.housePayments)" aria-valuenow="25"
+                      aria-valuemin="0" aria-valuemax="100">{{percentageCalculator(paymentRequest.housePayments)}}%
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

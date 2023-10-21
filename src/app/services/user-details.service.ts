@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { loggedInUserDetails } from '../models/loggedInUserDetails';
-import { ApiService } from './api.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +22,8 @@ export class UserDetailsService {
 
   public getUserRole(): boolean{
     if(this.userDetails.role === "ADMIN"){
-      console.log("you are logged as admin");
       return true;
     } else {
-      console.log("you are logged as user")
       return false;
     }
   }

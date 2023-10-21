@@ -1,7 +1,8 @@
 <div class="container-fluid background">
     <h2 class="text-center mb-0 pt-5">Users</h2>
     <div class="container text-center">
-        <button *ngIf="isAdmin" type="button" class="btn btn-success addButton" data-toggle="modal" data-target="#exampleModalCenter2">
+        <button *ngIf="isAdmin" type="button" class="btn btn-success addButton" data-toggle="modal"
+            data-target="#exampleModalCenter2">
             Add new
         </button>
         <!-- Modal -->
@@ -45,7 +46,8 @@
                             <div class="form-group text-left">
                                 <label for="house">House</label>
                                 <select name="house" class="form-control" id="house" [(ngModel)]="newUser.houseId">
-                                    <option *ngFor="let house of houses" [value]="house.id">{{ house.streetName }} {{
+                                    <option *ngFor="let house of housesWithNoOwner" [value]="house.id">{{
+                                        house.streetName }} {{
                                         house.houseNumber }}</option>
                                 </select>
                             </div>
@@ -61,7 +63,8 @@
                                     <option value="false">False</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary mr-2" (click)="closeModal('exampleModalCenter2')">
+                            <button type="submit" class="btn btn-primary mr-2"
+                                (click)="closeModal('exampleModalCenter2')">
                                 Save changes
                             </button>
                         </form>
@@ -85,7 +88,8 @@
                     </ul>
                     <div class="card-body">
                         <div class="float-right btn-group btn-group-sm">
-                            <button *ngIf="isAdmin" class="btn btn-danger mr-2" (click)="deleteUser(user)">Delete</button>
+                            <button *ngIf="isAdmin" class="btn btn-danger mr-2"
+                                (click)="deleteUser(user)">Delete</button>
                             <button *ngIf="isAdmin" type="button" class="btn btn-warning" data-toggle="modal"
                                 [attr.data-target]="'#exampleModal-' + user.id">
                                 Edit
@@ -134,7 +138,7 @@
                                                     <label for="house">House</label>
                                                     <select name="house" class="form-control" id="house"
                                                         [(ngModel)]="user.house.id">
-                                                        <option *ngFor="let house of houses" [value]="house.id">{{
+                                                        <option *ngFor="let house of houses" [value]="house.id" [disabled]="true">{{
                                                             house.streetName }} {{ house.houseNumber }}</option>
                                                     </select>
                                                 </div>
@@ -153,7 +157,8 @@
                                                         </option>
                                                     </select>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary mr-2" (click)="closeModal('exampleModal-' + user.id)">
+                                                <button type="submit" class="btn btn-primary mr-2"
+                                                    (click)="closeModal('exampleModal-' + user.id)">
                                                     Save changes
                                                 </button>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">

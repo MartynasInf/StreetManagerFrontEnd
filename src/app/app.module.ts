@@ -25,6 +25,7 @@ import { AdvertisementsComponent } from './advertisements/advertisements.compone
 import { PaymentRequestCreateFormComponent } from './payment-request-create-form/payment-request-create-form.component'
 import { FilterPipe } from './services/filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PaymentRequestDetailsComponent } from './payment-request-details/payment-request-details.component';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     StatisticsComponent,
     AdvertisementsComponent,
     PaymentRequestCreateFormComponent,
-    FilterPipe
+    FilterPipe,
+    PaymentRequestDetailsComponent
   ],
   imports: [
     BrowserModule,

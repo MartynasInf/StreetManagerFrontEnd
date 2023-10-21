@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="card-body">
+        <p>{{paymentRequestId}} Purpose {{paymentRequest.purpose}}</p>
+    </div>
+    <div class="card-body">
+        <button type="button" class="btn btn-warning btn-sm mr-2"
+            *ngIf="paymentRequest.operationStatus === 'CREATED'">Edit</button>
+        <button type="button" class="btn btn-danger btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
+            (click)="deletePaymentRequest(paymentRequest.id)">Delete</button>
+        <button type="button" class="btn btn-success btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
+            (click)="submitPaymentRequest(paymentRequest.id)">Submit</button>
+        <button type="button" class="btn btn-success btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'ACTIVATED'"
+            (click)="archivePaymentRequest(paymentRequest.id)">Archive</button>
+    </div>
+</div>
+
+<p>Payment request due date: {{paymentRequest.dueDate}}</p>
+<p>PaymentRequest total sum: {{paymentRequest.totalSum}}</p>
+<p>PaymentRequest operation status: {{paymentRequest.operationStatus}}</p>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Street name</th>
+            <th scope="col">House number</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Is Paid</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let paymentForHouse of paymentRequest.housePayments">
+            <th scope="row">{{paymentForHouse.id}}</th>
+            <td>{{paymentForHouse.house.streetName}}</td>
+            <td>{{paymentForHouse.house.houseNumber}}</td>
+            <td>{{paymentForHouse.amount}}</td>
+            <td>{{paymentForHouse.isPaid}}</td>
+            <td><button type="button" class="btn btn-success btn-sm pay-button"
+                *ngIf="paymentRequest.operationStatus === 'ACTIVATED' && !paymentForHouse.isPaid"
+                (click)="payHousePayment(paymentForHouse.id)">Pay</button></td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+

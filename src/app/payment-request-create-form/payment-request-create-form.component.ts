@@ -5,6 +5,7 @@ import { ApiService } from '../services/api.service';
 import { NgForm } from '@angular/forms';
 import { HousePayment } from '../models/HousePayment';
 import { Router } from '@angular/router';
+import { UserDetailsService } from '../services/user-details.service';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./payment-request-create-form.component.css']
 })
 export class PaymentRequestCreateFormComponent {
+  
   selectedValues: string[] = [];
   paymentRequests: PaymentRq[] = [];
   newPaymentRequest: PaymentRq = {} as PaymentRq;
@@ -37,7 +39,7 @@ export class PaymentRequestCreateFormComponent {
 
 
 
-  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef, private router: Router) {
+  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef, private router: Router, private userDetails: UserDetailsService) {
     this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
       this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
     });
@@ -46,14 +48,14 @@ export class PaymentRequestCreateFormComponent {
       this.filterHousesOnlyWithOwners();
       this.unselectedHouses = this.housesWithOwners;
       this.filteredUnselectedHouses = this.unselectedHouses;
-
- 
     });
   }
 
   public saveNewPaymentRequest(newRequest: NgForm) {
     this.newPaymentRequestDto = newRequest.value;
     this.newPaymentRequestDto.houseIds = this.generateHouseIds();
+    const loggedInUserDetails = this.userDetails.getUserDetails();
+    this.newPaymentRequestDto.creator = loggedInUserDetails.firstName + ' ' + loggedInUserDetails.lastName;
     this.apiService.saveNewPaymentRequest(this.newPaymentRequestDto)
     this.router.navigate(['/dashboard/paymentRequests'])
   }

@@ -16,8 +16,8 @@ declare var $: any;
 export class UsersComponent {
 
   users: User[] = [];
-
   houses: House[] = [];
+  housesWithNoOwner: House[] = [];
 
   newUser: UserDto = {
     id: '',
@@ -36,6 +36,7 @@ export class UsersComponent {
   constructor(private apiServices: ApiService, private userDetailService: UserDetailsService){
     this.apiServices.getAllHouses().subscribe((houses: House[]) => {
       this.houses = houses; // Update houses array when data changes
+      this.filterHousesWithNoOwner();
     });
     this.apiServices.getAllUsers().subscribe((users: User[]) => {
       this.users = users; // Update houses array when data changes
@@ -65,6 +66,7 @@ export class UsersComponent {
   }
 
   public saveEditedUser(editedUser: NgForm){
+    console.log(editedUser.value)
     this.apiServices.saveUsersInfo(editedUser.value)
   }
 
@@ -77,4 +79,9 @@ export class UsersComponent {
     $('body').removeClass('modal-open');
     $('.modal-backdrop').remove();
   }
+
+  filterHousesWithNoOwner(){
+    this.housesWithNoOwner = this.houses.filter(house => house.user.id === null)
+  }
+
 }

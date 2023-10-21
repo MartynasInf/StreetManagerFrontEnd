@@ -1,4 +1,5 @@
 import { HousePayment } from "./HousePayment";
+import { UserDto } from "./userDto";
 
 export interface PaymentRq {
     id: any;
@@ -7,6 +8,8 @@ export interface PaymentRq {
     totalSum: number;
     operationStatus: string;
     housePayments: HousePayment[];
+    creator: string;
+    creationDate: Date;
 
 
     houseIds: number[];

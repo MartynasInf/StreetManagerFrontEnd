@@ -28,13 +28,21 @@
                         </div>
                     </div>
                     <div class="row pl-2 width100">
-                        <div class="col-md-6 col-sm-6 width100" >
+                        <div class="col-md-6 col-sm-6 width100">
                             <div class="form-group width100">
                                 <label>Select Houses</label>
                                 <input type="text" [(ngModel)]="searchTermForSelecting" (keyup)="updateFilteredHouses()"
                                     placeholder="Search by street name" class="form-control mb-3" name="streetName">
                                 <div class="scrollTableSettings">
                                     <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Street</th>
+                                                <th>House number</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
                                         <tbody id="first">
                                             <tr *ngFor="let house of filteredUnselectedHouses">
                                                 <td>{{ house.id }}</td>
@@ -55,6 +63,14 @@
                                 placeholder="Search by street name" class="form-control mb-3" name="streetName">
                             <div class="scrollTableSettings">
                                 <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Street</th>
+                                            <th>House number</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
                                     <tbody id="second">
                                         <tr *ngFor="let house of filterSelectedHouses">
                                             <td>{{ house.id }}</td>

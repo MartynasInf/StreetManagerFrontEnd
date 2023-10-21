@@ -5,6 +5,7 @@ import { NgForm } from '@angular/forms';
 import { House } from '../models/House';
 import { HousePayment } from '../models/HousePayment';
 import { PercentPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 
 declare var $: any;
@@ -21,63 +22,55 @@ export class PaymentRequestsComponent {
   houses: House[] = [];
   housePayment: HousePayment = {} as HousePayment;
   housesWithOwners: House[] = [];
+  activePaymentRequests: PaymentRq[] = [];
+  archivedPaymentRequests: PaymentRq[] = [];
 
 
-  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef){
+  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef, private router: Router) {
     this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
       this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
+      this.sortPaymentRequestsByActivity(this.paymentRequests)
     });
     this.apiService.getAllHouses().subscribe((houses: House[]) => {
       this.houses = houses; // Update houses array when data changes
     });
   }
 
-  ngOnInit(){
-    this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
-      this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
-    });
-    // this.apiService.getAllHouses().subscribe((houses: House[]) => {
-    //   this.houses = houses; // Update houses array when data changes
+  ngOnInit() {
+    // this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
+    //   this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
     // });
   }
 
-
-
-  public deletePaymentRequest(requestId: any){
-    this.apiService.deletePaymentRequest(requestId)
+  sortPaymentRequestsByActivity(retrivedRequests: PaymentRq[]) {
+    this.archivedPaymentRequests = [];
+    this.activePaymentRequests = [];
+    for (const paymentRq of retrivedRequests) {
+      if (paymentRq.operationStatus === "ARCHIVED") {
+        this.archivedPaymentRequests.push(paymentRq);
+      } else {
+        this.activePaymentRequests.push(paymentRq)
+      }
+    }
   }
 
-  public submitPaymentRequest(requestId: any){
-    this.newPaymentRequest.id = requestId;
-    this.newPaymentRequest.operationStatus = "ACTIVE";
-    this.apiService.changePaymentRequestOperationStatus(this.newPaymentRequest);
-  }
-
-  public percentageCalculator(housePayments: HousePayment[]): number{
+  percentageCalculator(housePayments: HousePayment[]): number {
     let paidCount = 0;
     let unpaidCount = 0;
 
-    for(const housePayment of housePayments){
-      if(housePayment.isPaid){
+    for (const housePayment of housePayments) {
+      if (housePayment.isPaid) {
         paidCount++;
       } else {
         unpaidCount++;
       }
     }
     let sumOfPayments = paidCount + unpaidCount;
-    let paymentPercents = Math.round(paidCount/sumOfPayments * 100);
+    let paymentPercents = Math.round(paidCount / sumOfPayments * 100);
     return paymentPercents;
   }
-
-  public payHousePayment(housePaymentId: any){
-    this.housePayment.id = housePaymentId;
-    this.apiService.payHousePayment(this.housePayment);
-  }
-
-  public archivePaymentRequest(requestId: any){
-    this.newPaymentRequest.id = requestId;
-    this.newPaymentRequest.operationStatus = "ARCHIVED";
-    this.apiService.changePaymentRequestOperationStatus(this.newPaymentRequest);
+  openPaymentRequestDetails(id: number) {
+    this.router.navigate(['/dashboard/paymentRequestDetails', id]);
   }
 
 }

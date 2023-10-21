@@ -57,8 +57,6 @@ export class ApiService {
         alert(error.message);
       }
     )
- 
-    // return this.users;
     return this.userUpdated.asObservable();
   }
 
@@ -77,7 +75,6 @@ export class ApiService {
         alert(error.message);
       }
     )
-    // return this.houses;
     return this.housesUpdated.asObservable();
   }
 
@@ -172,7 +169,6 @@ export class ApiService {
         alert(error.message);
       }
     )
-    // return this.houses;
     return this.paymentRequestsUpdated.asObservable();
   }
 

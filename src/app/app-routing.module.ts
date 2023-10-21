@@ -12,6 +12,7 @@ import { PollsComponent } from './polls/polls.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { AdvertisementsComponent } from './advertisements/advertisements.component';
 import { PaymentRequestCreateFormComponent } from './payment-request-create-form/payment-request-create-form.component';
+import { PaymentRequestDetailsComponent } from './payment-request-details/payment-request-details.component';
 
 const routes: Routes = [
 { path: "home", component: HomeComponent},
@@ -25,7 +26,9 @@ const routes: Routes = [
   { path: "statistics", component: StatisticsComponent},
   { path: "advertisements", component: AdvertisementsComponent},
   { path: "paymentOperationCreateForm", component: PaymentRequestCreateFormComponent},
+  { path: "paymentRequestDetails/:id", component: PaymentRequestDetailsComponent},
   { path: "", redirectTo: "news", pathMatch: "full"}
+  
 ]},
 { path: "", redirectTo: "home", pathMatch: "full"}
 
