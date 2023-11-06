@@ -1,47 +1,204 @@
-<div class="row">
+<div class="flex-container-paymentRq-details">
+  <div>
     <div class="card-body">
-        <p>{{paymentRequestId}} Purpose {{paymentRequest.purpose}}</p>
+      <button type="button" class="btn btn-outline-success btn-sm mr-2" routerLink="/dashboard/paymentRequests/">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+          <path fill-rule="evenodd"
+            d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z">
+          </path>
+        </svg>
+      </button>
+      <button type="button" class="btn btn-info btn-sm mr-2" [disabled]=true>{{paymentRequest.operationStatus}}</button>
+      <button type="button" class="btn btn-success btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
+        (click)="submitPaymentRequest(paymentRequest.id)">Submit</button>
+      <button type="button" class="btn btn-warning btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'" 
+      (click)="editPaymentRequest(paymentRequest.id)">Edit</button>
+      <button type="button" class="btn btn-danger btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
+        (click)="deletePaymentRequest(paymentRequest.id)">Delete</button>
+      <button type="button" class="btn btn-success btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'ACTIVATED'"
+        (click)="archivePaymentRequest(paymentRequest.id)">Archive</button>
     </div>
-    <div class="card-body">
-        <button type="button" class="btn btn-warning btn-sm mr-2"
-            *ngIf="paymentRequest.operationStatus === 'CREATED'">Edit</button>
-        <button type="button" class="btn btn-danger btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
-            (click)="deletePaymentRequest(paymentRequest.id)">Delete</button>
-        <button type="button" class="btn btn-success btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
-            (click)="submitPaymentRequest(paymentRequest.id)">Submit</button>
-        <button type="button" class="btn btn-success btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'ACTIVATED'"
-            (click)="archivePaymentRequest(paymentRequest.id)">Archive</button>
+  </div>
+
+  <!-- //----------------------------------------------------------------- -->
+  <div>
+    <div class="container-fluid padding-bottom-3x mb-1">
+      <div class="card mb-3">
+        <div class="p-3 text-center text-white text-lg bg-dark rounded-top"><span class="text-uppercase">
+          </span>Purpose - <span class="text-medium">{{paymentRequest.purpose}}</span></div>
+        <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Payment request ID:
+            </span>{{paymentRequest.id}}</div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Creation date: </span>
+            {{paymentRequest.creationDate}}</div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Creator: </span>{{paymentRequest.creator}}
+          </div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Due date: </span>{{paymentRequest.dueDate}}
+          </div>
+        </div>
+        <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Total sum to pay:
+            </span>{{paymentRequest.totalSum}} Eur.</div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium"></span></div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium"></span></div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium"></span></div>
+        </div>
+        <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium">Comment:
+            </span>Additional info</div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium"></span></div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium"></span></div>
+          <div class="w-100 text-center py-1 px-2"><span class="text-medium"></span></div>
+        </div>
+        <div class="card-body">
+          <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+            <div class="step" [class.completed]="true">
+              <div class="step-icon-wrap">
+                <div class="step-icon"><i class="pe-7s-hammer"></i></div>
+              </div>
+              <h4 class="step-title">Request created</h4>
+            </div>
+            <div class="step"
+              [class.completed]="paymentRequest.operationStatus === 'ACTIVATED' || paymentRequest.operationStatus === 'ARCHIVED'">
+              <div class="step-icon-wrap">
+                <div class="step-icon"><i class="pe-7s-check"></i></div>
+              </div>
+              <h4 class="step-title">Request submited</h4>
+            </div>
+            <div class="step" [class.completed]="isRequestFullyPaid">
+              <div class="step-icon-wrap">
+                <div class="step-icon"><i class="pe-7s-credit"></i></div>
+              </div>
+              <h4 class="step-title">Request fully paid</h4>
+            </div>
+            <div class="step" [class.completed]="paymentRequest.operationStatus === 'ARCHIVED'">
+              <div class="step-icon-wrap">
+                <div class="step-icon"><i class="pe-7s-albums"></i></div>
+              </div>
+              <h4 class="step-title">Request archived</h4>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  <!-- //----------------------------------------------------------------------- -->
 </div>
 
-<p>Payment request due date: {{paymentRequest.dueDate}}</p>
-<p>PaymentRequest total sum: {{paymentRequest.totalSum}}</p>
-<p>PaymentRequest operation status: {{paymentRequest.operationStatus}}</p>
 
-<div>
-    <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Street name</th>
-            <th scope="col">House number</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Is Paid</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let paymentForHouse of paymentRequest.housePayments">
-            <th scope="row">{{paymentForHouse.id}}</th>
-            <td>{{paymentForHouse.house.streetName}}</td>
-            <td>{{paymentForHouse.house.houseNumber}}</td>
-            <td>{{paymentForHouse.amount}}</td>
-            <td>{{paymentForHouse.isPaid}}</td>
-            <td><button type="button" class="btn btn-success btn-sm pay-button"
-                *ngIf="paymentRequest.operationStatus === 'ACTIVATED' && !paymentForHouse.isPaid"
-                (click)="payHousePayment(paymentForHouse.id)">Pay</button></td>
-          </tr>
-        </tbody>
-      </table>
+<!-- <form #newPaymentForm="ngForm" (ngSubmit)="saveNewPaymentRequest(newPaymentForm)">
+  <div class="row pl-4">
+      <div class="form-group" style="width: 97%">
+          <label for="purpose">Purpose</label>
+          <input type="text" name="purpose" class="form-control" id="purspose"
+              [(ngModel)]="newPaymentRequest.purpose" />
+      </div>
+  </div>
+  <div class="row pl-4">
+      <div class="form-group" style="width: 46%; margin-right: 5%;">
+          <label for="dueDate">Due date</label>
+          <input type="date" name="dueDate" class="form-control" id="dueDate"
+              [(ngModel)]="newPaymentRequest.dueDate" />
+      </div>
+      <div class="form-group" style="width: 46%;">
+          <label for="totalSum">Total sum to pay</label>
+          <input type="text" name="totalSum" class="form-control" id="totalSum"
+              [(ngModel)]="newPaymentRequest.totalSum" />
+      </div>
+  </div>
+  <div class="row pl-2 width100">
+      <div class="col-md-6 col-sm-6 width100">
+          <div class="form-group width100">
+              <label>Select Houses</label>
+              <input type="text" [(ngModel)]="searchTermForSelecting" (keyup)="updateFilteredHouses()"
+                  placeholder="Search by street name" class="form-control mb-3" name="streetName">
+              <div class="scrollTableSettings">
+                  <table class="table table-bordered">
+                      <thead>
+                          <tr>
+                              <th>ID</th>
+                              <th>Street</th>
+                              <th>House number</th>
+                              <th>Action</th>
+                          </tr>
+                      </thead>
+                      <tbody id="first">
+                          <tr *ngFor="let house of filteredUnselectedHouses">
+                              <td>{{ house.id }}</td>
+                              <td>{{ house.streetName }}</td>
+                              <td>{{ house.houseNumber }}</td>
+                              <td><button type="button" class="btn btn-success"
+                                      (click)="selectHouse(house)">Add</button></td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+
+          </div>
+      </div>
+      <div class="col-md-6 col-sm-6" style="padding-left: 3%;">
+          <label>Selected Houses</label>
+          <input type="text" [(ngModel)]="searchTermForSelected" (keyup)="updateSelectedHouses()"
+              placeholder="Search by street name" class="form-control mb-3" name="streetName">
+          <div class="scrollTableSettings">
+              <table class="table table-bordered">
+                  <thead>
+                      <tr>
+                          <th>ID</th>
+                          <th>Street</th>
+                          <th>House number</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody id="second">
+                      <tr *ngFor="let house of filterSelectedHouses">
+                          <td>{{ house.id }}</td>
+                          <td>{{ house.streetName }}</td>
+                          <td>{{ house.houseNumber }}</td>
+                          <td><button type="button" class="btn btn-warning"
+                                  (click)="removeFromSelected(house)">Remove</button></td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+
+      </div>
+  </div>
+  <div class="row pl-4">
+      <button type="submit" class="btn btn-primary mr-2">
+          Create payment request
+      </button>
+  </div>
+</form> -->
+
+
+<div class="container-fluid">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Street name</th>
+        <th scope="col">House Number</th>
+        <th scope="col">House owner information</th>
+        <th scope="col">Amount to pay (Eur.)</th>
+        <th scope="col">Is Paid</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let paymentForHouse of paymentRequest.housePayments">
+        <th scope="row">{{paymentForHouse.id}}</th>
+        <td>{{paymentForHouse.house.streetName}}</td>
+        <td>{{paymentForHouse.house.houseNumber}}</td>
+        <td>{{paymentForHouse.house.user.firstName + ' ' +
+          paymentForHouse.house.user.lastName + ' ' + paymentForHouse.house.user.phoneNumber}}</td>
+        <td>{{paymentForHouse.amount}}</td>
+        <td>{{paymentForHouse.isPaid}}</td>
+        <td><button type="button" class="btn btn-success btn-sm pay-button"
+            *ngIf="paymentRequest.operationStatus === 'ACTIVATED' && !paymentForHouse.isPaid"
+            (click)="payHousePayment(paymentForHouse.id)">Pay</button></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
-

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserDetailsService } from '../services/user-details.service';
+import { UserDetailsService } from '../services/user_service/user-details.service';
 
 @Component({
   selector: 'app-dashboard-menu',
@@ -8,11 +8,11 @@ import { UserDetailsService } from '../services/user-details.service';
 })
 export class DashboardMenuComponent {
 
-  isAdmin:boolean = false;
+  isAdmin: boolean = false;
 
-  constructor(private userDetailService: UserDetailsService){
+  constructor(private userDetailService: UserDetailsService) {
 
-  const userDetails = this.userDetailService.getUserDetails();
+    const userDetails = this.userDetailService.getUserDetails();
     if (userDetails) {
       if (userDetails.role === "ADMIN") {
         this.isAdmin = true;

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserDetailsService } from '../services/user-details.service';
+import { UserDetailsService } from '../services/user_service/user-details.service';
 import { loggedInUserDetails } from '../models/loggedInUserDetails';
 
 
@@ -14,16 +14,16 @@ export class DashboardComponent {
   isNavbarCollapsed = true;
 
 
-  constructor(private router: Router){
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
-  public logout(){
+  public logout() {
     localStorage.setItem('isAuthenticated', 'false')
     localStorage.setItem('myToken', "")
     this.router.navigate(['/home'])
   }
-  
+
 }

@@ -23,7 +23,7 @@ import { PollsComponent } from './polls/polls.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { AdvertisementsComponent } from './advertisements/advertisements.component';
 import { PaymentRequestCreateFormComponent } from './payment-request-create-form/payment-request-create-form.component'
-import { FilterPipe } from './services/filter.pipe';
+import { FilterPipe } from './services/filtering_service/filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PaymentRequestDetailsComponent } from './payment-request-details/payment-request-details.component';
 

@@ -1,10 +1,8 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../services/API_service/api.service';
 import { PaymentRq } from '../models/PaymentRq';
-import { NgForm } from '@angular/forms';
 import { House } from '../models/House';
 import { HousePayment } from '../models/HousePayment';
-import { PercentPipe } from '@angular/common';
 import { Router } from '@angular/router';
 
 

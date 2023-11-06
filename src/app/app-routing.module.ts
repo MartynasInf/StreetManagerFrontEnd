@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
-import { AuthGuard } from './services/auth.guard';
+import { AuthGuard } from './services/authguard_service/auth.guard';
 import { UsersComponent } from './users/users.component';
 import { HousesComponent } from './houses/houses.component';
 import { NewsComponent } from './news/news.component';
@@ -27,8 +27,8 @@ const routes: Routes = [
   { path: "advertisements", component: AdvertisementsComponent},
   { path: "paymentOperationCreateForm", component: PaymentRequestCreateFormComponent},
   { path: "paymentRequestDetails/:id", component: PaymentRequestDetailsComponent},
+  { path: "paymentOperationCreateForm/edit/:id", component: PaymentRequestCreateFormComponent},
   { path: "", redirectTo: "news", pathMatch: "full"}
-  
 ]},
 { path: "", redirectTo: "home", pathMatch: "full"}
 

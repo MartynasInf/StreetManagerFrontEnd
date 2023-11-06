@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PaymentRq } from '../models/PaymentRq';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../services/API_service/api.service';
 import { HousePayment } from '../models/HousePayment';
+import { PaymentServiceService } from '../services/paymentRequest_service/payment-service.service';
+import { PaymentRequestCreateFormComponent } from '../payment-request-create-form/payment-request-create-form.component';
 
 @Component({
   selector: 'app-payment-request-details',
@@ -16,12 +18,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
   paymentRequest: PaymentRq = {} as PaymentRq;
   newPaymentRequest: PaymentRq = {} as PaymentRq;
   housePayment: HousePayment = {} as HousePayment;
+  isRequestFullyPaid: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
     private apiService: ApiService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private paymentService: PaymentServiceService
   ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -34,15 +38,16 @@ export class PaymentRequestDetailsComponent implements OnInit {
         // Find the payment request after both ID and payment requests data are available
         this.paymentRequest = this.getPaymentRequest();
 
+
+        this.checkIfRequestIsFullyPaid(this.paymentRequest);
         // Trigger change detection manually to update the view
         this.cdr.detectChanges();
+
       });
     });
   }
-
   ngOnInit() {
   }
-
   getPaymentRequest(): PaymentRq {
     const paymentRequest = this.paymentRequests.find(request => request.id === this.paymentRequestId);
     if (paymentRequest) {
@@ -74,32 +79,32 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.apiService.changePaymentRequestOperationStatus(this.newPaymentRequest);
   }
 
-  // public percentageCalculator(housePayments: HousePayment[]): number {
-  //   let paidCount = 0;
-  //   let unpaidCount = 0;
-
-  //   for (const housePayment of housePayments) {
-  //     if (housePayment.isPaid) {
-  //       paidCount++;
-  //     } else {
-  //       unpaidCount++;
-  //     }
-  //   }
-  //   let sumOfPayments = paidCount + unpaidCount;
-  //   let paymentPercents = Math.round(paidCount / sumOfPayments * 100);
-  //   return paymentPercents;
-  // }
-
-  public payHousePayment(housePaymentId: any){
+  payHousePayment(housePaymentId: any) {
     this.housePayment.id = housePaymentId;
     this.apiService.payHousePayment(this.housePayment);
+    this.checkIfRequestIsFullyPaid(this.paymentRequest)
   }
 
 
-  public archivePaymentRequest(requestId: any){
+  archivePaymentRequest(requestId: any) {
     this.newPaymentRequest.id = requestId;
     this.newPaymentRequest.operationStatus = "ARCHIVED";
     this.apiService.changePaymentRequestOperationStatus(this.newPaymentRequest);
+  }
+
+  checkIfRequestIsFullyPaid(paymentRequest: PaymentRq): boolean {
+    this.isRequestFullyPaid = true;
+    for (let housePayment of paymentRequest.housePayments) {
+      if (!housePayment.isPaid) {
+        this.isRequestFullyPaid = false;
+        break;
+      }
+    }
+    return this.isRequestFullyPaid;
+  }
+
+  editPaymentRequest(id: number){
+    this.router.navigate(['/dashboard/paymentOperationCreateForm/edit', id]);
   }
 
 

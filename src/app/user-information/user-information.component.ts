@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { loggedInUserDetails } from '../models/loggedInUserDetails';
-import { UserDetailsService } from '../services/user-details.service';
+import { UserDetailsService } from '../services/user_service/user-details.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../services/API_service/api.service';
 
 declare var $: any;
 
@@ -17,7 +17,7 @@ export class UserInformationComponent {
   loggedInUser: loggedInUserDetails = {} as loggedInUserDetails;
 
 
-  constructor(private router: Router, private userDetailsInfoService: UserDetailsService, private apiService: ApiService){
+  constructor(private router: Router, private userDetailsInfoService: UserDetailsService, private apiService: ApiService) {
     const userDetails = this.userDetailsInfoService.getUserDetails();
     if (userDetails) {
       this.loggedInUser = userDetails;
@@ -31,7 +31,7 @@ export class UserInformationComponent {
     }
   }
 
-  public editMyUser(myEditedUser: NgForm){
+  public editMyUser(myEditedUser: NgForm) {
     this.apiService.saveUsersInfo(myEditedUser.value)
   }
 

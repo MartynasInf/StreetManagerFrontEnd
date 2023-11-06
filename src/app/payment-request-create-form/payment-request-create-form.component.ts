@@ -1,11 +1,12 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { PaymentRq } from '../models/PaymentRq';
 import { House } from '../models/House';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../services/API_service/api.service';
 import { NgForm } from '@angular/forms';
 import { HousePayment } from '../models/HousePayment';
-import { Router } from '@angular/router';
-import { UserDetailsService } from '../services/user-details.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UserDetailsService } from '../services/user_service/user-details.service';
+import { combineLatest } from 'rxjs';
 
 
 @Component({
@@ -14,7 +15,7 @@ import { UserDetailsService } from '../services/user-details.service';
   styleUrls: ['./payment-request-create-form.component.css']
 })
 export class PaymentRequestCreateFormComponent {
-  
+
   selectedValues: string[] = [];
   paymentRequests: PaymentRq[] = [];
   newPaymentRequest: PaymentRq = {} as PaymentRq;
@@ -23,44 +24,61 @@ export class PaymentRequestCreateFormComponent {
   housesWithOwners: House[] = [];
   searchTermForSelecting: string = '';
   searchTermForSelected: string = '';
-
   newPaymentRequestDto: PaymentRq = {} as PaymentRq;
-
   unselectedHouses: House[] = [];
   selectedHouses: House[] = [];
-
   filterSelectedHouses: House[] = [];
   filteredUnselectedHouses: House[] = [];
-
   pageForUnselectedHouses: number = 1;
   pageForSelectedHouses: number = 1;
+  isEditing: boolean = false;
+  paymentRqForEdit: PaymentRq = {} as PaymentRq;
+  housesFromPaymentRq: House[] = [];
 
 
-
-
-
-  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef, private router: Router, private userDetails: UserDetailsService) {
-    this.apiService.getAllPayments().subscribe((paymentRequestsFromDb: PaymentRq[]) => {
-      this.paymentRequests = paymentRequestsFromDb; // Update houses array when data changes
-    });
-    this.apiService.getAllHouses().subscribe((houses: House[]) => {
+  constructor(private apiService: ApiService, private cdr: ChangeDetectorRef, private router: Router, private userDetails: UserDetailsService, private route: ActivatedRoute, private ngZone: NgZone) {
+    combineLatest([
+      this.apiService.getAllHouses(),
+      this.apiService.getAllPayments()
+    ]).subscribe(([houses, paymentRequestsFromDb]) => {
       this.houses = houses; // Update houses array when data changes
       this.filterHousesOnlyWithOwners();
       this.unselectedHouses = this.housesWithOwners;
       this.filteredUnselectedHouses = this.unselectedHouses;
+
+      this.paymentRequests = paymentRequestsFromDb;
+      const paymentRequestId = this.route.snapshot.params['id'];
+      if (paymentRequestId) {
+        this.isEditing = true;
+        this.paymentRqForEdit = this.paymentRequests.find(pr => pr.id === +paymentRequestId)!;
+        this.setPaymentRequestInfo(this.paymentRqForEdit);
+      }
     });
   }
 
   public saveNewPaymentRequest(newRequest: NgForm) {
-    this.newPaymentRequestDto = newRequest.value;
-    this.newPaymentRequestDto.houseIds = this.generateHouseIds();
-    const loggedInUserDetails = this.userDetails.getUserDetails();
-    this.newPaymentRequestDto.creator = loggedInUserDetails.firstName + ' ' + loggedInUserDetails.lastName;
-    this.apiService.saveNewPaymentRequest(this.newPaymentRequestDto)
-    this.router.navigate(['/dashboard/paymentRequests'])
+    if (this.isEditing) {
+      // Handle the logic for updating an existing payment request
+      // this.apiService.saveNewPaymentRequest(this.newPaymentRequestDto);
+      const paymentRequestId = this.route.snapshot.params['id'];
+      this.newPaymentRequestDto = newRequest.value;
+      this.newPaymentRequestDto.id = paymentRequestId;
+      this.newPaymentRequestDto.houseIds = this.generateHouseIds();
+      const loggedInUserDetails = this.userDetails.getUserDetails();
+      this.newPaymentRequestDto.creator = loggedInUserDetails.firstName + ' ' + loggedInUserDetails.lastName;
+      this.apiService.saveNewPaymentRequest(this.newPaymentRequestDto)
+      this.router.navigate(['/dashboard/paymentRequests'])
+    } else {
+      this.newPaymentRequestDto = newRequest.value;
+      this.newPaymentRequestDto.houseIds = this.generateHouseIds();
+      const loggedInUserDetails = this.userDetails.getUserDetails();
+      this.newPaymentRequestDto.creator = loggedInUserDetails.firstName + ' ' + loggedInUserDetails.lastName;
+      this.apiService.saveNewPaymentRequest(this.newPaymentRequestDto)
+      this.router.navigate(['/dashboard/paymentRequests'])
+    }
   }
 
-  public filterHousesOnlyWithOwners(): House[] {
+  filterHousesOnlyWithOwners(): House[] {
     this.housesWithOwners = this.houses.filter((house) => house.user.id !== null && house.user.enabled === true);
     return this.housesWithOwners;
   }
@@ -68,13 +86,11 @@ export class PaymentRequestCreateFormComponent {
   updateFilteredHouses() {
     this.filteredUnselectedHouses = this.unselectedHouses.filter(house => house.streetName.toLowerCase().includes(this.searchTermForSelecting.toLowerCase())
     );
-    console.log('filtered unselected houses' + this.filteredUnselectedHouses.length)
   }
 
   updateSelectedHouses() {
     this.filterSelectedHouses = this.selectedHouses.filter(house => house.streetName.toLowerCase().includes(this.searchTermForSelected.toLowerCase())
     );
-    console.log('filtered selected houses' + this.filterSelectedHouses.length)
   }
 
   selectHouse(house: House) {
@@ -96,11 +112,44 @@ export class PaymentRequestCreateFormComponent {
     }
     this.updateSelectedHouses();
     this.updateFilteredHouses();
-    
   }
 
-  private generateHouseIds(): number[] {
+  generateHouseIds(): number[] {
     const idsArray: number[] = this.selectedHouses.map(house => house.id);
     return idsArray;
+  }
+
+  regenerateHousesFromPaymentRequest(paymentRqForEdit: PaymentRq): House[] {
+    this.housesFromPaymentRq = [];
+    for (const housePayment of paymentRqForEdit.housePayments) {
+      if (housePayment.house && housePayment.house.id !== undefined) {
+        console.log('lets see if i retrieve all the houses')
+        console.log(this.houses)
+        let house = this.houses.find(houseToAdd => housePayment.house.id === houseToAdd.id);
+        console.log('one house from payment request array')
+        console.log(house)
+        if (house) {
+          this.housesFromPaymentRq.push(house);
+          console.log('houses list for returning')
+          console.log(this.housesFromPaymentRq)
+        }
+      }
+    }
+    return this.housesFromPaymentRq;
+  }
+
+  setPaymentRequestInfo(paymentRq: PaymentRq) {
+    console.log('Payment request received from details')
+    console.log(paymentRq)
+    this.newPaymentRequest = paymentRq;
+
+    this.filterSelectedHouses = this.regenerateHousesFromPaymentRequest(paymentRq);
+    console.log('Filtered selected houses')
+    console.log(this.filterSelectedHouses)
+    this.filteredUnselectedHouses = this.filteredUnselectedHouses.filter(unselectedHouse =>
+      !this.filterSelectedHouses.some(selectedHouse => selectedHouse.id === unselectedHouse.id)
+    );
+    this.unselectedHouses = this.filteredUnselectedHouses;
+    this.selectedHouses = this.filterSelectedHouses;
   }
 }

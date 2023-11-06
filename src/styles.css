@@ -101,27 +101,27 @@ body {
   left: 25%;
 }
 
-.fontSize{
+.fontSize {
   font-size: small;
 }
 
-.buttonForMenus{
+.buttonForMenus {
   color: whitesmoke;
   border-color: whitesmoke;
 }
 
-.buttonForMenus:hover{
+.buttonForMenus:hover {
   color: green;
   background-color: initial;
 }
 
-.addButton{
+.addButton {
   height: 40px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.marginBottom{
+.marginBottom {
   /* margin-bottom: 70px; */
   height: 70px;
 }
@@ -134,7 +134,7 @@ body {
   letter-spacing: 2px;
 }
 
-.paymenrRequestBlock{
+.paymenrRequestBlock {
   padding-left: 10px;
   padding-right: 10px;
   width: 100%;
@@ -144,10 +144,11 @@ body {
   margin-top: 10px;
   margin-bottom: 5px;
 }
-.paymentRequestInfoStyles{
+
+.paymentRequestInfoStyles {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 5px;
-  display: flex; 
+  display: flex;
   align-items: center;
 }
 
@@ -166,26 +167,31 @@ body {
   background-color: red;
 }
 
-.dropdown-menu{
+.dropdown-menu {
   padding-left: 5px;
   width: 480px;
 }
 
-.pay-button{
+.pay-button {
   height: 30px;
   vertical-align: auto;
 }
 
-.scrollTableSettings{
-  height: 500px; 
+.scrollTableSettings {
+  height: 500px;
   overflow-y: auto;
 }
 
-.width100{
+.width100 {
   width: 100%;
 }
 
-.backgroundWhite{
+.backgroundWhite {
   background-color: white;
 }
 
+.flex-container-paymentRq-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}

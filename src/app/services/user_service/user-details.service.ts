@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { loggedInUserDetails } from '../models/loggedInUserDetails';
+import { loggedInUserDetails } from '../../models/loggedInUserDetails';
 
 
 @Injectable({
@@ -11,17 +11,17 @@ export class UserDetailsService {
 
   userDetails: loggedInUserDetails = {} as loggedInUserDetails;
 
-  public saveUserDetail(givenUserDetails: loggedInUserDetails): void{
+  public saveUserDetail(givenUserDetails: loggedInUserDetails): void {
     this.userDetails = givenUserDetails;
     localStorage.setItem('userDetails', JSON.stringify(givenUserDetails));
   }
-  public getUserDetails(){
+  public getUserDetails() {
     const userDetailsString = localStorage.getItem('userDetails');
     return userDetailsString ? JSON.parse(userDetailsString) : null;
   }
 
-  public getUserRole(): boolean{
-    if(this.userDetails.role === "ADMIN"){
+  public getUserRole(): boolean {
+    if (this.userDetails.role === "ADMIN") {
       return true;
     } else {
       return false;

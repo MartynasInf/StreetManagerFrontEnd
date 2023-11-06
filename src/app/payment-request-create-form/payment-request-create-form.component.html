@@ -1,17 +1,28 @@
 <div class="container-fluid">
     <div class="row mb-2">
-        <div class="width100 backgroundWhite" style="height: 40px; margin-top: 10px; ">
-            <h3>Payment request creation form</h3>
+        <div class="card-body">
+            <h5 class="card-title text-uppercase mb-0">
+                {{isEditing ? 'Update payment request' : 'Create payment request'}}
+            </h5>
         </div>
     </div>
     <div class="col-md-8 col-sm-8">
         <div class="row">
             <div class="width100 backgroundWhite">
                 <form #newPaymentForm="ngForm" (ngSubmit)="saveNewPaymentRequest(newPaymentForm)">
+                    <button type="button" class="btn btn-outline-success btn-sm ml-2 mt-2"
+                        routerLink="/dashboard/paymentRequests/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z">
+                            </path>
+                        </svg>
+                    </button>
                     <div class="row pl-4">
                         <div class="form-group" style="width: 97%">
                             <label for="purpose">Purpose</label>
-                            <input type="text" name="purpose" class="form-control" id="purspose"
+                            <input type="text" name="purpose" class="form-control" id="purpose"
                                 [(ngModel)]="newPaymentRequest.purpose" />
                         </div>
                     </div>
@@ -86,8 +97,8 @@
                         </div>
                     </div>
                     <div class="row pl-4">
-                        <button type="submit" class="btn btn-primary mr-2">
-                            Create payment request
+                        <button type="submit" class="btn btn-success mr-2">
+                            {{ isEditing ? 'Update payment request' : 'Create payment request' }}
                         </button>
                     </div>
                 </form>
@@ -95,8 +106,6 @@
         </div>
     </div>
     <div class="col-6">
-
     </div>
-
     <div class="row"></div>
 </div>
