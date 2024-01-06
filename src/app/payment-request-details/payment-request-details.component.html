@@ -12,8 +12,8 @@
       <button type="button" class="btn btn-info btn-sm mr-2" [disabled]=true>{{paymentRequest.operationStatus}}</button>
       <button type="button" class="btn btn-success btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
         (click)="submitPaymentRequest(paymentRequest.id)">Submit</button>
-      <button type="button" class="btn btn-warning btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'" 
-      (click)="editPaymentRequest(paymentRequest.id)">Edit</button>
+      <button type="button" class="btn btn-warning btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
+        (click)="editPaymentRequest(paymentRequest.id)">Edit</button>
       <button type="button" class="btn btn-danger btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'CREATED'"
         (click)="deletePaymentRequest(paymentRequest.id)">Delete</button>
       <button type="button" class="btn btn-success btn-sm mr-2" *ngIf="paymentRequest.operationStatus === 'ACTIVATED'"
@@ -83,95 +83,7 @@
       </div>
     </div>
   </div>
-  <!-- //----------------------------------------------------------------------- -->
 </div>
-
-
-<!-- <form #newPaymentForm="ngForm" (ngSubmit)="saveNewPaymentRequest(newPaymentForm)">
-  <div class="row pl-4">
-      <div class="form-group" style="width: 97%">
-          <label for="purpose">Purpose</label>
-          <input type="text" name="purpose" class="form-control" id="purspose"
-              [(ngModel)]="newPaymentRequest.purpose" />
-      </div>
-  </div>
-  <div class="row pl-4">
-      <div class="form-group" style="width: 46%; margin-right: 5%;">
-          <label for="dueDate">Due date</label>
-          <input type="date" name="dueDate" class="form-control" id="dueDate"
-              [(ngModel)]="newPaymentRequest.dueDate" />
-      </div>
-      <div class="form-group" style="width: 46%;">
-          <label for="totalSum">Total sum to pay</label>
-          <input type="text" name="totalSum" class="form-control" id="totalSum"
-              [(ngModel)]="newPaymentRequest.totalSum" />
-      </div>
-  </div>
-  <div class="row pl-2 width100">
-      <div class="col-md-6 col-sm-6 width100">
-          <div class="form-group width100">
-              <label>Select Houses</label>
-              <input type="text" [(ngModel)]="searchTermForSelecting" (keyup)="updateFilteredHouses()"
-                  placeholder="Search by street name" class="form-control mb-3" name="streetName">
-              <div class="scrollTableSettings">
-                  <table class="table table-bordered">
-                      <thead>
-                          <tr>
-                              <th>ID</th>
-                              <th>Street</th>
-                              <th>House number</th>
-                              <th>Action</th>
-                          </tr>
-                      </thead>
-                      <tbody id="first">
-                          <tr *ngFor="let house of filteredUnselectedHouses">
-                              <td>{{ house.id }}</td>
-                              <td>{{ house.streetName }}</td>
-                              <td>{{ house.houseNumber }}</td>
-                              <td><button type="button" class="btn btn-success"
-                                      (click)="selectHouse(house)">Add</button></td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-
-          </div>
-      </div>
-      <div class="col-md-6 col-sm-6" style="padding-left: 3%;">
-          <label>Selected Houses</label>
-          <input type="text" [(ngModel)]="searchTermForSelected" (keyup)="updateSelectedHouses()"
-              placeholder="Search by street name" class="form-control mb-3" name="streetName">
-          <div class="scrollTableSettings">
-              <table class="table table-bordered">
-                  <thead>
-                      <tr>
-                          <th>ID</th>
-                          <th>Street</th>
-                          <th>House number</th>
-                          <th>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody id="second">
-                      <tr *ngFor="let house of filterSelectedHouses">
-                          <td>{{ house.id }}</td>
-                          <td>{{ house.streetName }}</td>
-                          <td>{{ house.houseNumber }}</td>
-                          <td><button type="button" class="btn btn-warning"
-                                  (click)="removeFromSelected(house)">Remove</button></td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-
-      </div>
-  </div>
-  <div class="row pl-4">
-      <button type="submit" class="btn btn-primary mr-2">
-          Create payment request
-      </button>
-  </div>
-</form> -->
-
 
 <div class="container-fluid">
   <table class="table table-striped">

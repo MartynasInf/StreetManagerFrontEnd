@@ -1,4 +1,5 @@
 import { House } from "./House";
+import { VoteAnswer } from "./VoteAnswer";
 
 
 export interface User {
@@ -11,4 +12,6 @@ export interface User {
     bankAccount: string;
     enabled: boolean;
     house: House;
+    voteAnswers: VoteAnswer[]; 
+    role: string;
 }

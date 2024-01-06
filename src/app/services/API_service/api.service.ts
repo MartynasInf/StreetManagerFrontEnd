@@ -8,6 +8,8 @@ import { loggedInUserDetails } from '../../models/loggedInUserDetails';
 import { UserDetailsService } from '../user_service/user-details.service';
 import { PaymentRq } from '../../models/PaymentRq';
 import { HousePayment } from '../../models/HousePayment';
+import { VotingOperation } from 'src/app/models/VotingOperation';
+import { VoteAnswer } from 'src/app/models/VoteAnswer';
 
 
 @Injectable({
@@ -24,6 +26,8 @@ export class ApiService {
   private userUpdated = new Subject<User[]>();
   private housesUpdated = new Subject<House[]>();
   private paymentRequestsUpdated = new Subject<PaymentRq[]>();
+  private votingRequests: VotingOperation[] = [];
+  private votingRequestsUpdated = new Subject<VotingOperation[]>();
 
   //-------------------------------------------------------------------------------------
   public saveUsersInfo(userDetails: UserDto): void {
@@ -230,4 +234,77 @@ export class ApiService {
     const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
     return this.httpClient.post<HousePayment>('http://localhost:8080/authorised/housePayments/pay', housePayment, { headers, responseType: 'text' as 'json' })
   }
+  //------------------------------------------------------------------------------------------------------------
+  public getAllVotingOperations(): Observable<VotingOperation[]> {
+    this.getAllVotingRequestsFromDB().subscribe(
+      (response: VotingOperation[]) => {
+        this.votingRequests = response;
+        this.votingRequestsUpdated.next([...this.votingRequests]);
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    )
+    return this.votingRequestsUpdated.asObservable();
+  }
+
+  private getAllVotingRequestsFromDB(): Observable<VotingOperation[]> {
+    const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
+    return this.httpClient.get<VotingOperation[]>('http://localhost:8080/authorised/polls/', { headers })
+  }
+  //------------------------------------------------------------------------------------------------------------
+  public changeVotingRequestOperationStatus(votingOperation: VotingOperation) {
+    this.changeVotingRequestOperationStatusInDb(votingOperation).subscribe(
+      (response: VotingOperation) => {
+        this.getAllVotingOperations();
+      }
+    )
+  }
+
+  private changeVotingRequestOperationStatusInDb(votingOperation: VotingOperation): Observable<VotingOperation> {
+    const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
+    return this.httpClient.post<VotingOperation>('http://localhost:8080/authorised/polls/changeVotingRequestOperationStatus', votingOperation, { headers, responseType: 'text' as 'json' })
+  }
+  //------------------------------------------------------------------------------------------------------------
+  public voteForTheAnswer(voteAnswerId: number, userId: number) {
+    this.voteForTheAnswerInDb(voteAnswerId, userId).subscribe(
+      (response: VoteAnswer) => {
+        this.getAllVotingOperations();
+      }
+    )
+  }
+
+  private voteForTheAnswerInDb(voteAnswerId: number, userId: number): Observable<VoteAnswer> {
+    const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
+    return this.httpClient.get<VoteAnswer>('http://localhost:8080/authorised/polls/vote/' + voteAnswerId + '/' + userId, { headers, responseType: 'text' as 'json' })
+  }
+  //-----------------------------------------------------------------------------------------------------------
+  public createVotingOperation(votingOperation: VotingOperation) {
+    this.createVotingOperationInDb(votingOperation).subscribe(
+      (response: VotingOperation) => {
+        this.getAllVotingOperations();
+      }
+    )
+  }
+
+  private createVotingOperationInDb(votingOperation: VotingOperation): Observable<VotingOperation> {
+    const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
+    return this.httpClient.post<VotingOperation>('http://localhost:8080/authorised/polls/createVoting', votingOperation, { headers, responseType: 'text' as 'json' })
+  }
+  //------------------------------------------------------------------------------------------------------
+
+  public deleteVotingOperation(votingOperationId: number) {
+    this.deleteVotingOperationInDb(votingOperationId).subscribe(
+      (response: VotingOperation) => {
+        this.getAllVotingOperations();
+      }
+    )
+  }
+
+  private deleteVotingOperationInDb(votingOperationId: number): Observable<VotingOperation> {
+    const headers = new HttpHeaders().set("Authorization", 'Bearer ' + localStorage.getItem("myToken"));
+    return this.httpClient.delete<VotingOperation>('http://localhost:8080/authorised/polls/deleteVoting/' + votingOperationId, { headers, responseType: 'text' as 'json' })
+  }
+
 }
+

@@ -21,6 +21,7 @@ export class HousesComponent {
     id: '',
     streetName: '',
     houseNumber: '',
+    plotArea: 0,
     user: {} as User
   }
   currentPage: number = 1;
@@ -38,7 +39,7 @@ export class HousesComponent {
     });
     const userDetails = this.userDetailService.getUserDetails();
     if (userDetails) {
-      if (userDetails.role === "ADMIN") {
+      if (userDetails.role === "ADMIN" || userDetails.role === "SUPERADMIN") {
         this.isAdmin = true;
       } else {
         this.isAdmin = false;
@@ -102,19 +103,19 @@ export class HousesComponent {
     this.selectedStreet = (event.target as HTMLSelectElement).value;
   }
 
-  searchHouses() {
+  searchHouses(): House[] {
     this.filteredHouses = this.houses;
     this.searchedHouses = [];
     if (this.selectedStreet === null || this.selectedStreet === '') {
       if (this.searchTerm === null || this.searchTerm === 'Search in all') {
-        this.filteredHouses = this.houses;
+        return this.filteredHouses = this.houses;
       } else {
         for (const house of this.houses) {
           if (house.user.firstName.includes(this.searchTerm) || house.user.lastName.includes(this.searchTerm)) {
             this.searchedHouses.push(house)
           }
         }
-        this.filteredHouses = this.searchedHouses;
+        return this.filteredHouses = this.searchedHouses;
       }
     } else {
       this.filteredHouses = this.houses.filter(house => house.streetName === this.selectedStreet)
@@ -123,7 +124,7 @@ export class HousesComponent {
           this.searchedHouses.push(house)
         }
       }
-      this.filteredHouses = this.searchedHouses;
+      return this.filteredHouses = this.searchedHouses;
     }
   }
 

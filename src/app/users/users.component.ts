@@ -36,6 +36,7 @@ export class UsersComponent {
     enabled: false
   }
   isAdmin: boolean = false;
+  isSuperAdmin: boolean = false;
 
   constructor(private apiServices: ApiService, private userDetailService: UserDetailsService) {
     this.apiServices.getAllHouses().subscribe((houses: House[]) => {
@@ -49,10 +50,17 @@ export class UsersComponent {
 
     const userDetails = this.userDetailService.getUserDetails();
     if (userDetails) {
-      if (userDetails.role === "ADMIN") {
+      if (userDetails.role === "ADMIN" || userDetails.role === "SUPERADMIN") {
         this.isAdmin = true;
       } else {
         this.isAdmin = false;
+      }
+    }
+    if (userDetails) {
+      if (userDetails.role === "SUPERADMIN") {
+        this.isSuperAdmin = true;
+      } else {
+        this.isSuperAdmin = false;
       }
     }
   }

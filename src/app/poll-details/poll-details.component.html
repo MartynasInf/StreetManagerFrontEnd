@@ -1,0 +1,200 @@
+<div class="flex-container-paymentRq-details">
+    <div>
+        <div class="card-body">
+            <button type="button" class="btn btn-outline-success btn-sm mr-2" routerLink="/dashboard/polls/">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                        d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z">
+                    </path>
+                </svg>
+            </button>
+            <button type="button" class="btn btn-info btn-sm mr-2"
+                [disabled]=true>{{votingOperation.operationStatus}}</button>
+            <button type="button" class="btn btn-success btn-sm mr-2"
+                *ngIf="votingOperation.operationStatus === 'CREATED'"
+                (click)="changeVotingOperationStatus(votingOperation.id, 'ACTIVATED')">Submit</button>
+            <button type="button" class="btn btn-warning btn-sm mr-2"
+                *ngIf="votingOperation.operationStatus === 'CREATED'" (click)="editVotingRequest(votingOperation.id)">Edit</button>
+            <button type="button" class="btn btn-danger btn-sm mr-2"
+                *ngIf="votingOperation.operationStatus === 'CREATED'" (click)="deleteVotingRequest(votingOperation.id)">Delete</button>
+            <button type="button" class="btn btn-success btn-sm mr-2"
+                *ngIf="votingOperation.operationStatus === 'ACTIVATED'"
+                (click)="changeVotingOperationStatus(votingOperation.id, 'ARCHIVED')">Archive</button>
+        </div>
+    </div>
+
+    <!-- //----------------------------------------------------------------- -->
+    <div>
+        <div class="container-fluid padding-bottom-3x mb-1">
+            <div class="card mb-3">
+                <div class="p-3 text-center text-white text-lg bg-dark rounded-top"><span class="text-uppercase">
+                    </span>Title - <span class="text-medium">{{votingOperation.title}}</span></div>
+                <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+                    <div class="w-100 text-center py-1 px-2"><span class="text-medium">Payment request ID:
+                        </span>{{votingOperation.id}}</div>
+                    <div class="w-100 text-center py-1 px-2"><span class="text-medium">Creator:
+                        </span>{{votingOperation.creator}}
+                    </div>
+                    <div class="w-100 text-center py-1 px-2"><span class="text-medium">Due date:
+                        </span>{{votingOperation.finishDate}}
+                    </div>
+                </div>
+                <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+                    <div class="w-100 text-center py-1 px-2"><span class="text-medium">
+                        </span>{{votingOperation.description}}</div>
+                </div>
+                <div class="d-flex flex-wrap flex-sm-nowrap justify-content-between py-3 px-2 bg-secondary">
+                    <!-- <div class="w-100 text-center py-1 px-2"><span class="text-medium">Coment: </span>Additional info
+                    </div>
+                    <div class="w-100 text-center py-1 px-2"><span class="text-medium"></span></div>
+                    <div class="w-100 text-center py-1 px-2"><span class="text-medium"></span></div> -->
+                </div>
+                <div class="card-body">
+                    <div
+                        class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                        <div class="step" [class.completed]="true">
+                            <div class="step-icon-wrap">
+                                <div class="step-icon"><i class="pe-7s-hammer"></i></div>
+                            </div>
+                            <h4 class="step-title">Request created</h4>
+                        </div>
+                        <div class="step"
+                            [class.completed]="votingOperation.operationStatus === 'ACTIVATED' || votingOperation.operationStatus === 'ARCHIVED'">
+                            <div class="step-icon-wrap">
+                                <div class="step-icon"><i class="pe-7s-check"></i></div>
+                            </div>
+                            <h4 class="step-title">Request submited</h4>
+                        </div>
+                        <div class="step" [class.completed]="isVoingOperationFullyVoted()">
+                            <div class="step-icon-wrap">
+                                <div class="step-icon"><i class="pe-7s-credit"></i></div>
+                            </div>
+                            <h4 class="step-title">Request fully voted</h4>
+                        </div>
+                        <div class="step" [class.completed]="votingOperation.operationStatus === 'ARCHIVED'">
+                            <div class="step-icon-wrap">
+                                <div class="step-icon"><i class="pe-7s-albums"></i></div>
+                            </div>
+                            <h4 class="step-title">Request archived</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="container">
+        <div class="row ">
+            <div class="col-xl-6 col-lg-6" *ngFor="let voteAnswer of votingOperation.voteAnswers">
+                <div class="card l-bg-blue-dark">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                        <div class="mb-4">
+                            <h3 class="card-title mb-0">{{voteAnswer.answer}}</h3>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h5 class="d-flex align-items-center mb-0">
+                                    Users voted: {{getVoteCountForAnswer(voteAnswer)}} of
+                                    {{votingOperation.votingUsers.length}}
+                                </h5>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>{{calculatePercentsOfVoting(voteAnswer)}}%<i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25"
+                                aria-valuemin="0" aria-valuemax="100"
+                                [style.width.%]="calculatePercentsOfVoting(voteAnswer)"></div>
+                        </div>
+                        <div class="col-4 text-right mt-4">
+                            <button *ngIf="votingOperation.operationStatus === 'ACTIVATED' && !voteButtonIsVisable()" type="button"
+                                class="btn btn-success btn-rounded waves-effect waves-light m-b-5" (click)="voteForAnAnswer(voteAnswer)">Vote</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="col-12">
+        <div class="card card-margin">
+            <div class="card-body">
+                <div class="row search-body">
+                    <div class="col-lg-12">
+                        <div class="search-result">
+                            <div class="result-body">
+                                <div class="table-responsive">
+                                    <h5>Users who vote:</h5>
+                                    <table class="table widget-26">
+                                        <thead class="thead">
+                                            <tr>
+                                                <th scope="col"></th>
+                                                <th scope="col">Name and surename</th>
+                                                <th scope="col">Role</th>
+                                                <th scope="col">Street name</th>
+                                                <th scope="col">House number</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Phone number</th>
+                                                <th scope="col">Voting status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let user of votingOperation.votingUsers">
+                                                <td>
+                                                    <div class="widget-26-job-emp-img">
+                                                        <img src="../../assets/user.png" alt="Company" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="widget-26-job-title">
+                                                        {{user.firstName}} {{user.lastName}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="widget-26-job-info">
+                                                        {{user.role}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="widget-26-job-info">
+                                                        {{user.house.streetName}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="widget-26-job-info">
+                                                        {{user.house.houseNumber}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="widget-26-job-info">
+                                                        {{user.email}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="widget-26-job-info">
+                                                        {{user.phoneNumber}}
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="widget-26-job-info">
+                                                        {{userVotedStatus(user.id)}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

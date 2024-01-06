@@ -139,10 +139,7 @@ export class PaymentRequestCreateFormComponent {
   }
 
   setPaymentRequestInfo(paymentRq: PaymentRq) {
-    console.log('Payment request received from details')
-    console.log(paymentRq)
     this.newPaymentRequest = paymentRq;
-
     this.filterSelectedHouses = this.regenerateHousesFromPaymentRequest(paymentRq);
     console.log('Filtered selected houses')
     console.log(this.filterSelectedHouses)

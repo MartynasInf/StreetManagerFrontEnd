@@ -11,7 +11,7 @@ import { PaymentRequestCreateFormComponent } from '../payment-request-create-for
   templateUrl: './payment-request-details.component.html',
   styleUrls: ['./payment-request-details.component.css']
 })
-export class PaymentRequestDetailsComponent implements OnInit {
+export class PaymentRequestDetailsComponent {
 
   paymentRequests: PaymentRq[] = {} as PaymentRq[];
   paymentRequestId: number | null = null;
@@ -25,7 +25,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
     private apiService: ApiService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private paymentService: PaymentServiceService
   ) {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -46,8 +45,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       });
     });
   }
-  ngOnInit() {
-  }
+
   getPaymentRequest(): PaymentRq {
     const paymentRequest = this.paymentRequests.find(request => request.id === this.paymentRequestId);
     if (paymentRequest) {

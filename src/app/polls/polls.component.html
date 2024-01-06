@@ -1,1 +1,187 @@
-<p>polls works!</p>
+<div class="container-fluid">
+    <div class="card card-body mt-3 mb-3 titleFont">
+        <h5 class="card-title text-uppercase mb-0">Polls</h5>
+    </div>
+    <div>
+        <p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+                aria-expanded="false" aria-controls="collapseExample">
+                Open filters
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <div class="col-lg-12 card-margin">
+                    <div class="card search-form">
+                        <div class="card-body p-0">
+                            <form id="search-form">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row no-gutters">
+                                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                                <select class="form-control" id="exampleFormControlSelect1">
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-8 col-md-6 col-sm-12 p-0">
+                                                <input type="text" placeholder="Search..." class="form-control"
+                                                    id="search" name="search">
+                                                <button type="submit" style="display: none;"></button>
+                                            </div>
+                                            <div class="col-lg-1 col-md-3 col-sm-12 p-0">
+                                                <button type="submit" class="btn btn-base">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-search">
+                                                        <circle cx="11" cy="11" r="8"></circle>
+                                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card card-body mt-2 mb-2">
+        <div class="col-lg-12">
+            <div>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter3" (click)="createNewPoll()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                        class="bi bi-clipboard2-plus" viewBox="0 0 16 16">
+                        <path
+                            d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
+                        <path
+                            d="M3 2.5a.5.5 0 0 1 .5-.5H4a.5.5 0 0 0 0-1h-.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1H12a.5.5 0 0 0 0 1h.5a.5.5 0 0 1 .5.5v12a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5z" />
+                        <path
+                            d="M8.5 6.5a.5.5 0 0 0-1 0V8H6a.5.5 0 0 0 0 1h1.5v1.5a.5.5 0 0 0 1 0V9H10a.5.5 0 0 0 0-1H8.5z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-margin">
+                <div class="card-body">
+                    <div class="row search-body">
+                        <div class="col-lg-12">
+                            <div class="search-result">
+                                <div class="result-header">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="records">Showing {{ startIndex }} - {{ endIndex }} of {{
+                                                totalRows }}</div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="result-actions">
+                                                <div class="result-sorting">
+                                                </div>
+                                                <div class="result-views">
+                                                    <select class="form-control border-0" id="exampleOption"
+                                                        [(ngModel)]="itemsPerPage"
+                                                        (change)="onItemsPerPageChange($event)">
+                                                        <option value="10">Row per page 10</option>
+                                                        <option value="20">Row per page 20</option>
+                                                        <option value="50">Row per page 50</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item">
+                                          <a class="nav-link navHover" [class.active]="selectedTab === 'active'" (click)="selectTab('active')">Active</a>
+                                        </li>
+                                        <li class="nav-item">
+                                          <a class="nav-link navHover" [class.active]="selectedTab === 'archived'" (click)="selectTab('archived')">Archived</a>
+                                        </li>
+                                      </ul>
+                                </div>
+                                <div class="result-body">
+                                    <div class="table-responsive project-list">
+                                        <table class="table project-table table-centered table-nowrap widget-26">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"></th>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">Creator</th>
+                                                    <th scope="col">Due date</th>
+                                                    <th scope="col">Operation status</th>
+                                                    <th scope="col">Progress</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let votingOperation of showSelectedPolls()">
+                                                    <td>
+                                                        <div class="widget-26-job-emp-img">
+                                                            <img src="../../assets/polling.jpg" alt="Company" />
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-title">
+                                                            {{votingOperation.title}}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-info">
+                                                            {{votingOperation.creator}}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-info">
+                                                            {{votingOperation.finishDate}}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="widget-26-job-info">
+                                                            {{votingOperation.operationStatus}}
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="progress widget-26-job-info mt-2">
+                                                            <div class="progress-bar" role="progressbar"
+                                                                [style.width.%]="calculatePollVotingPercentage(votingOperation)"
+                                                                aria-valuenow="25" aria-valuemin="0"
+                                                                aria-valuemax="100">
+                                                                {{calculatePollVotingPercentage(votingOperation)}}%
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="action widget-26-job-info">
+                                                            <button type="button" class="btn btn-outline-info btn-sm"
+                                                                (click)="pollDetails(votingOperation.id)"> <i
+                                                                    class="fa fa-eye"></i> </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <nav class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-pill-left btn-info" (click)="updatePage(currentPage - 1)"
+                            [disabled]="currentPage === 1">Previous</button>
+                        <button type="button" class="btn btn-pill-right btn-info" (click)="updatePage(currentPage + 1)"
+                            [disabled]="(currentPage * itemsPerPage) >= votingOperations.length">Next</button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

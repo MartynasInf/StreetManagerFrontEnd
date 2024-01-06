@@ -1,0 +1,284 @@
+<div class="container-fluid">
+    <div class="card card-body mt-3 mb-3 titleFont">
+        <h5 class="card-title text-uppercase mb-0">{{isEditing ? 'Update poll details' : 'Poll creation'}}</h5>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-margin">
+                <div class="card-body">
+                    <button type="button" class="btn btn-outline-success btn-sm ml-2 mb-3"
+                        routerLink="/dashboard/polls/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z">
+                            </path>
+                        </svg>
+                    </button>
+                    <form #newPollForm="ngForm" (ngSubmit)="saveNewPollOperation(newPollForm)">
+                        <!-- Main content -->
+                        <div class="row">
+                            <!-- Left side -->
+                            <div class="col-lg-8">
+                                <!-- Basic information -->
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="h6 mb-4">Basic information</h3>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="title">Title</label>
+                                                    <input type="text" name="title" id="title" class="form-control"
+                                                        [(ngModel)]="newPoll.title">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="description">Description</label>
+                                                    <input type="text" name="description" id="description"
+                                                        class="form-control" [(ngModel)]="newPoll.description" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="finishDate">Finish date</label>
+                                                    <input type="date" name="finishDate" id="finishDate"
+                                                        class="form-control" [(ngModel)]="newPoll.finishDate">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="mb-3">
+                                                    <div class="row">
+                                                        <label class="form-label">Creator</label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <label class="form-label">{{creator}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Vote Answers -->
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="h6 mb-4">Answers</h3>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Vote answer</th>
+                                                    <th scope="col">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let voteAnswer of newPoll.voteAnswers">
+                                                    <td>{{voteAnswer.answer}}</td>
+                                                    <td><button type="button"
+                                                            class="btn btn-warning btn-custom waves-effect waves-light m-b-5"
+                                                            (click)="removeAnswer(voteAnswer)">Remove</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="mb-3 mt-5">
+                                            <label class="form-label">Vote answer</label>
+                                            <input type="text" class="form-control" [(ngModel)]="answer"
+                                                name="voteAnswers">
+                                        </div>
+                                        <button type="button" class="btn btn-primary"
+                                            (click)="addVoteAnswer(answer)">Add answer</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Right side -->
+                            <div class="col-lg-4">
+                                <!-- Status -->
+                                <div class="card mb-4">
+                                    
+                                </div>
+                                <!-- Notes -->
+                                <!-- <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h3 class="h6">Notes</h3>
+                                        <textarea class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h3 class="h6 mb-4">Voters</h3>
+                                <div class="row">
+                                    <div class="result-body mr-3" style="min-width: 49%;">
+                                        <div class="table-responsive">
+                                            <!-- //------------------------------------------------------- -->
+                                            <div class="col-lg-12 card-margin">
+                                                <div class="card search-form">
+                                                    <div class="card-body p-0">
+                                                        <form id="search-form">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="row no-gutters">
+                                                                        <div class="col-lg-10 col-md-10 col-sm-10 p-0">
+                                                                            <select class="form-control"
+                                                                                id="exampleFormControlSelect1"
+                                                                                (change)="onStreetSelectForUnselectedHouses($event)">
+                                                                                <option [value]="''">
+                                                                                </option>
+                                                                                <option
+                                                                                    *ngFor="let street of getAllStreets()"
+                                                                                    [value]="street">
+                                                                                    {{street}}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-2 col-sm-12 p-0"
+                                                                            (click)="searchHouses('unselected')">
+                                                                            <button type="submit" class="btn btn-base">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    width="24" height="24"
+                                                                                    viewBox="0 0 24 24" fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    stroke-width="2"
+                                                                                    stroke-linecap="round"
+                                                                                    stroke-linejoin="round"
+                                                                                    class="feather feather-search">
+                                                                                    <circle cx="11" cy="11" r="8">
+                                                                                    </circle>
+                                                                                    <line x1="21" y1="21" x2="16.65"
+                                                                                        y2="16.65">
+                                                                                    </line>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- //------------------------------------------------------------ -->
+                                            <table class="table widget-26">
+                                                <thead class="thead">
+                                                    <tr>
+                                                        <th scope="col">Street name</th>
+                                                        <th scope="col">House number</th>
+                                                        <th scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let house of filteredUnselectedHouses">
+                                                        <td>
+                                                            <div class="widget-26-job-title">
+                                                                {{house.streetName}}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="widget-26-job-title">
+                                                                {{house.houseNumber}}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="widget-26-job-title">
+                                                                <button type="button" class="btn btn-warning"
+                                                                    (click)="selectHouse(house)">Add</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="result-body" style="min-width: 49%;">
+                                        <div class="table-responsive">
+                                            <!-- //----------------------------------------------------- -->
+                                            <div class="col-lg-12 card-margin">
+                                                <div class="card search-form">
+                                                    <div class="card-body p-0">
+                                                        <form id="search-form">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="row no-gutters">
+                                                                        <div class="col-lg-10 col-md-10 col-sm-10 p-0">
+                                                                            <select class="form-control"
+                                                                                id="exampleFormControlSelect1"
+                                                                                (change)="onStreetSelectForSelectedHouses($event)">
+                                                                                <option [value]="''">
+                                                                                </option>
+                                                                                <option
+                                                                                    *ngFor="let street of getAllStreets()"
+                                                                                    [value]="street">
+                                                                                    {{street}}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-lg-2 col-md-2 col-sm-12 p-0"
+                                                                            (click)="searchHouses('')">
+                                                                            <button type="submit" class="btn btn-base">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                    width="24" height="24"
+                                                                                    viewBox="0 0 24 24" fill="none"
+                                                                                    stroke="currentColor"
+                                                                                    stroke-width="2"
+                                                                                    stroke-linecap="round"
+                                                                                    stroke-linejoin="round"
+                                                                                    class="feather feather-search">
+                                                                                    <circle cx="11" cy="11" r="8">
+                                                                                    </circle>
+                                                                                    <line x1="21" y1="21" x2="16.65"
+                                                                                        y2="16.65">
+                                                                                    </line>
+                                                                                </svg>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- //-------------------------------------------------------------- -->
+                                            <table class="table widget-26">
+                                                <thead class="thead">
+                                                    <tr>
+                                                        <th scope="col">Street name</th>
+                                                        <th scope="col">House number</th>
+                                                        <th scope="col">Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let house of filteredSelectedHouses">
+                                                        <td>
+                                                            <div class="widget-26-job-title">
+                                                                {{house.streetName}}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="widget-26-job-title">
+                                                                {{house.houseNumber}}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="widget-26-job-title">
+                                                                <button type="button" class="btn btn-danger"
+                                                                    (click)="removeFromSelected(house)">Remove</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">{{ isEditing ? 'Update poll details' : 'Create new poll' }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

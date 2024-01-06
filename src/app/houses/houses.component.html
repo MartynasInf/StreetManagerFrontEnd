@@ -1,59 +1,59 @@
-<div class="container-fluid background">
-    <div class="card-body">
+<div class="container-fluid">
+    <div class="card card-body mt-3 mb-3 titleFont">
         <h5 class="card-title text-uppercase mb-0">Houses</h5>
     </div>
     <!-- //--------------------------------------Search bar starts--------------------------------- -->
-    <div class="row">
-        <div class="col-lg-12 card-margin">
-            <div class="card search-form">
-                <div class="card-body p-0">
-                    <form id="search-form">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="row no-gutters">
-                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                        <select class="form-control" id="exampleFormControlSelect1"
-                                            (change)="onStreetSelect($event)">
-                                            <option></option>
-                                            <option *ngFor="let street of getAllStreets()" [value]="street">
-                                                {{street}}</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-7 col-md-6 col-sm-12 p-0">
-                                        <input type="text" placeholder="Search..." class="form-control" id="search"
-                                            name="search" [(ngModel)]="searchTerm">
-                                        <button type="submit" style="display: none;"></button>
-                                    </div>
-                                    <div class="col-lg-1 col-md-3 col-sm-12 p-0" (click)="searchHouses()">
-                                        <button type="submit" class="btn btn-base">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-search">
-                                                <circle cx="11" cy="11" r="8"></circle>
-                                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <div class="col-lg-1 col-md-3 col-sm-12 p-0">
-                                        <button *ngIf="isAdmin" type="button" class="btn btn-success"
-                                            data-toggle="modal" data-target="#exampleModalCenter3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-house-add" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h4a.5.5 0 1 0 0-1h-4a.5.5 0 0 1-.5-.5V7.207l5-5 6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z" />
-                                                <path
-                                                    d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 1 0 1 0v-1h1a.5.5 0 1 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z" />
-                                            </svg>
-                                        </button>
+    <div>
+        <p>
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample3"
+                aria-expanded="false" aria-controls="collapseExample3">
+                Open filters
+            </button>
+        </p>
+        <div class="collapse" id="collapseExample3">
+            <div class="card card-body">
+                <div class="col-lg-12 card-margin">
+                    <div class="card search-form">
+                        <div class="card-body p-0">
+                            <form id="search-form">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="row no-gutters">
+                                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                                <select class="form-control" id="exampleFormControlSelect1"
+                                                    (change)="onStreetSelect($event)">
+                                                    <option></option>
+                                                    <option *ngFor="let street of getAllStreets()" [value]="street">
+                                                        {{street}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-8 col-md-9 col-sm-12 p-0">
+                                                <input type="text" placeholder="Search..." class="form-control"
+                                                    id="search" name="search" [(ngModel)]="searchTerm">
+                                                <button type="submit" style="display: none;"></button>
+                                            </div>
+                                            <div class="col-lg-1 col-md-3 col-sm-12 p-0" (click)="searchHouses()">
+                                                <button type="submit" class="btn btn-base">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-search">
+                                                        <circle cx="11" cy="11" r="8"></circle>
+                                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="row">
         <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -76,6 +76,11 @@
                                 <input type="text" name="houseNumber" class="form-control" id="houseNumber"
                                     [(ngModel)]="newHouse.houseNumber" />
                             </div>
+                            <div class="form-group text-left">
+                                <label for="plotArea">Plot area</label>
+                                <input type="text" name="plotArea" class="form-control" id="plotArea"
+                                    [(ngModel)]="newHouse.plotArea" />
+                            </div>
                             <button type="submit" class="btn btn-primary mr-2"
                                 (click)="closeModal('exampleModalCenter3')">
                                 Save changes
@@ -85,10 +90,26 @@
                 </div>
             </div>
         </div>
-
         <!-- //--------------------------------------Search bar ends--------------------------------- -->
-
-        <div class="row">
+        <div class="container-fluid">
+            <div class="card card-body mt-2 mb-2">
+                <div class="col-lg-12">
+                    <div>
+                        <button *ngIf="isAdmin" type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#exampleModalCenter3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-house-add" viewBox="0 0 16 16">
+                                <path
+                                    d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h4a.5.5 0 1 0 0-1h-4a.5.5 0 0 1-.5-.5V7.207l5-5 6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z" />
+                                <path
+                                    d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 1 0 1 0v-1h1a.5.5 0 1 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row container-fluid">
             <div class="col-12">
                 <div class="card card-margin">
                     <div class="card-body">
@@ -126,6 +147,7 @@
                                                         <th scope="col"></th>
                                                         <th scope="col">Street name</th>
                                                         <th scope="col">House number</th>
+                                                        <th scope="col">Plot area</th>
                                                         <th scope="col">Owner name</th>
                                                         <th scope="col">Contact information</th>
                                                         <th scope="col">Actions</th>
@@ -136,8 +158,7 @@
                                                         *ngFor="let house of filteredHouses | slice: (currentPage - 1) * itemsPerPage : currentPage * itemsPerPage">
                                                         <td>
                                                             <div class="widget-26-job-emp-img">
-                                                                <img src="https://w7.pngwing.com/pngs/86/356/png-transparent-home-care-service-computer-icons-font-awesome-house-grey-angle-apartment-logo.png"
-                                                                    alt="Company" />
+                                                                <img src="../../assets/houseIcon.png" alt="Company" />
                                                             </div>
                                                         </td>
                                                         <td>
@@ -148,6 +169,11 @@
                                                         <td>
                                                             <div class="widget-26-job-info">
                                                                 {{house.houseNumber}}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="widget-26-job-info">
+                                                                {{house.plotArea}}
                                                             </div>
                                                         </td>
                                                         <td>
@@ -163,7 +189,7 @@
                                                         <td>
                                                             <div class="widget-26-job-info">
                                                                 <button *ngIf="isAdmin" type="button"
-                                                                    class="btn btn-warning widget-26-job-info"
+                                                                    class="btn btn-warning widget-26-job-info btn-sm mx-2 mt-2"
                                                                     data-toggle="modal"
                                                                     [attr.data-target]="'#exampleModal-' + house.id">
                                                                     Edit
@@ -209,6 +235,15 @@
                                                                                             id="houseNumber"
                                                                                             [(ngModel)]="house.houseNumber" />
                                                                                     </div>
+                                                                                    <div class="form-group text-left">
+                                                                                        <label for="hplotArea">Plot
+                                                                                            area</label>
+                                                                                        <input type="text"
+                                                                                            name="plotArea"
+                                                                                            class="form-control"
+                                                                                            id="hplotArea"
+                                                                                            [(ngModel)]="house.plotArea" />
+                                                                                    </div>
                                                                                     <button type="submit"
                                                                                         class="btn btn-primary mr-2"
                                                                                         (click)="closeModal('exampleModal-' + house.id)">
@@ -220,7 +255,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <button *ngIf="isAdmin"
-                                                                    class="btn btn-danger ml-2 widget-26-job-info"
+                                                                    class="btn btn-danger btn-sm mx-2 mt-2 widget-26-job-info"
                                                                     (click)="deleteHouse(house)">Delete</button>
                                                             </div>
                                                         </td>

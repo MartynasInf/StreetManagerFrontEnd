@@ -14,7 +14,7 @@ export class DashboardMenuComponent {
 
     const userDetails = this.userDetailService.getUserDetails();
     if (userDetails) {
-      if (userDetails.role === "ADMIN") {
+      if (userDetails.role === "ADMIN" || userDetails.role === "SUPERADMIN") {
         this.isAdmin = true;
       } else {
         this.isAdmin = false;
